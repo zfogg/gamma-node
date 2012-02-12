@@ -1,3 +1,27 @@
-div
-	a(id='sender')='Send a Message'
-	ul(id='reciever')
+#container.container_12
+
+  header#header
+    h1 Title Header
+    h3 Subtitle or Tagline
+
+  #main(role='main')
+    #content-wrapper.grid_7
+      #content!=content
+
+    #sidebar
+      .grid_5
+          h2 Contact Information
+      .grid_3
+        p
+          | Location Title <br />
+          | 9119 Place Drive <br />
+          | Citytown, AB 01235
+      .grid_2
+          p.align-right (123) 456-7890 <br />
+            a(href='mailto:address@email.com') address@email.com
+      .grid_5
+
+  footer#footer
+    #signature.prefix_8.grid_4
+      p Design and development by 
+        a(href='mailto:zach.fogg@gmail.com') Z. Fogg
