@@ -1,7 +1,7 @@
 {
-  "name": "YOUR-PROJECT-NAME-HERE",
-  "description": "YOUR PROJECT DESCRIPTION HERE",
-  "author": "YOUR NAME <your@emailaddress.com>",
+  "name": "gamma-node",
+  "description": "Zach Fogg's personal public-facing website.",
+  "author": "Zach Fogg <zach@zachfogg.com>",
   "version": "0.0.1",
   "dependencies": {
     "connect": "1.8.5",
