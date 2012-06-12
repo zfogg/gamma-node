@@ -9,6 +9,7 @@
 
 /* Normalize */
 #blr.normalize(#0abbcd, #555);
+body { margin: 0; }
 
 /* ==|== primary styles =====================================================
    Author: Z. Fogg
@@ -20,26 +21,19 @@
 @color_grass-green: #8FBE00;
 @color_honey-yellow: #FCD036;
 
-// Font classes.
-.afs-chunkfive { font-family: "ChunkFive", Rockwell, serif;}
-.afs-fontin-sans { font-family: "Fontin Sans", "Lucida Grande", "Arial", "Helvetica", "Verdana", "Gill Sans", sans-serif; font-size: 0.990em;}
-.afs-ubuntu { font-family: "Ubuntu", "Arial", "Helvetica", "Lucida Grande", "Verdana", "Gill Sans", sans-serif; font-size: 0.962em;}
-.afs-liberation-mono { font-family: "Liberation Mono", Menlo, Courier New, Courier, Mono, monospace; font-size: 0.947em;}
-.console-font { font-family: 'Lucida Console', Monaco, monospace; font-size: 0.8em; }
-
 // Helper classes.
 .hpad { padding-right: 5px; padding-left: 5px; }
 .vpad { padding-top: 10px; padding-bottom: 10px; }
 .vexpand { height: 1%; overflow: hidden; }
 
+
+html, body { height: 100%; }
 body {
-  height:100%;
-  // background: url(/images/bg.png) repeat;
-  padding-bottom: 20px;
-  .hpad;
+  margin: 0;
+  background-color: @color_dark-gray;
+  #hl.transition(background-color);
 
   h1 {
-    .afs-chunkfive;
     font-size: 5em;
     letter-spacing: 0.12em;
     color: white;
@@ -49,28 +43,24 @@ body {
                  -2px -2px @color_dark-gray;
   }
   h2 {
-    .afs-liberation-mono;
     .hpad;
     font-size: 2.0em;
     margin-bottom: 0.1em;
     margin-top: 0.4em;
   }
   h3 {
-    .afs-chunkfive;
     .hpad;
     font-size: 2.0em;
     margin-top: 0.7em;
     margin-bottom: 0.5em;
   }
   h4 {
-    .afs-liberation-mono;
     .hpad;
     color: desaturate(@color_dark-gray, 10%);
     font-size: 1.3em;
     margin-bottom: 0.4em;
   }
   p {
-    .afs-fontin-sans;
     .hpad;
   }
   a { color: @color_light-blue; }
@@ -79,154 +69,79 @@ body {
     padding-top: 0.2em;
   }
   ul > li:first-child { padding-top: 0em; }
+  .console-font { font-family: 'Lucida Console', Monaco, monospace; font-size: 0.8em; }
 
-  #container {
-    #header {
-      text-align: center;
-      h1 {
-        line-height: 0.95em;
-        margin-top: 0.3em;
-        margin-bottom: 0.1em;
-      }
-      h3 { margin-bottom: 0.7em; }
-    } // #header
-    #main {
-      .vexpand;
-      .border-radius(15px, 0, 0, 15px);
-      .box-shadow(~"2px 0 3px #000, -2px -2px 3px #000");
-      background-color: darken(@color_dark-gray, 5%);
-      padding-top: 10px;
-      padding-bottom: 10px;
-      #content-wrapper {
+  #container-wrapper {
+    height: auto !important;
+    height: 100%;
+    min-height: 100%;
+    background: url("/images/bg.png") repeat;
+    #container {
+      font-size: 1.3em;
+      color: white;
+      padding-bottom: 20px;
+      @header_size: 130px;
+      #header {
+        height: @header_size;
+        margin-top: @header_size/3;
+        margin-bottom: @header_size/7;
+        #logo {
+          line-height: @header_size;
+          h1 {
+            margin: 0;
+            font-size: 3*(@header_size/4);
+          }
+        } // #logo
+        #nav {
+          margin: 0;
+          padding: 0;
+          .navItem {
+            padding: 0;
+            display: block;
+            float: left;
+            height: 30px;
+            width: 270px;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+          }
+        } // #nav
+      } // #header
+      #main {
+        .vexpand;
+        padding-top: 10px;
+        padding-bottom: 10px;
         .border-radius(0, 0, 0, 15px);
         .box-shadow(~"-3px -3px 8px #000, 3px 3px 8px #000");
-        background-color: white;
-        #content {
-          padding-right: 10px;
-          padding-left: 10px;
-          .afs-fontin-sans;
-          font-size: 1.3em;
-          p { margin-top: 0.4em; }
-        h2 { color: @color_dark-gray; }
-        } // #content
-      } // #content-wrapper
-    } // #main
-    #sidebar {
-      .vexpand;
-      p { font-size: 1.05em; }
-      color: white;
-    } // #sidebar
-    #footer {
-      .vexpand;
-      .border-radius(0, 15px, 15px, 0);
-      .opacity(0.8);
-      .box-shadow(~"2px 1px 5px #000, -2px 1px 5px #000");
-      background-color: @color_dark-gray;
-      #signature {
-        p {
-          .console-font;
-          font-size: 0.8em;
-          text-align: right;
-          color: @color_honey-yellow;
-        }
-        a { color: @color_grass-green; }
-      } // #signature
-    } // #footer
-  } // #container
+        #hl.background-gradient(rgba(10,10,10,0.7), rgba(95,95,95,0.45), '');
+        #content-wrapper {
+          #content {
+            p, h1, h2, h3, h4 { color: white; }
+            .hpad;
+            p { margin-top: 0.4em; }
+          } // #content
+        } // #content-wrapper
+      } // #main
+      #footer {
+        .vexpand;
+        .border-radius(0, 15px, 15px, 0);
+        .opacity(0.8);
+        .box-shadow(~"2px 1px 5px #000, -2px 1px 5px #000");
+        background-color: @color_dark-gray;
+        #signature {
+          p {
+            .console-font;
+            text-align: right;
+            color: @color_honey-yellow;
+          }
+          a { color: @color_grass-green; }
+        } // #signature
+      } // #footer
+    } // #container
+  } // #container-wrapper
 } // body
 
-/* Fonts. */
-@font-face {
-  font-family: 'ChunkFive';
-  src: url('/fonts/chunkfive-webfont.eot');
-  src: local('☺'), url('/fonts/chunkfive-webfont.woff') format('woff'), url('/fonts/chunkfive-webfont.ttf') format('truetype'), url('/fonts/chunkfive-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Fontin Sans';
-  src: url('/fonts/fontin_sans_b_45b-webfont.eot');
-  src: local('☺'), url('/fonts/fontin_sans_b_45b-webfont.woff') format('woff'), url('/fonts/fontin_sans_b_45b-webfont.ttf') format('truetype'), url('/fonts/fontin_sans_b_45b-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Fontin Sans';
-  src: url('/fonts/fontin_sans_bi_45b-webfont.eot');
-  src: local('☺'), url('/fonts/fontin_sans_bi_45b-webfont.woff') format('woff'), url('/fonts/fontin_sans_bi_45b-webfont.ttf') format('truetype'), url('/fonts/fontin_sans_bi_45b-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 700;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Fontin Sans';
-  src: url('/fonts/fontin_sans_i_45b-webfont.eot');
-  src: local('☺'), url('/fonts/fontin_sans_i_45b-webfont.woff') format('woff'), url('/fonts/fontin_sans_i_45b-webfont.ttf') format('truetype'), url('/fonts/fontin_sans_i_45b-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Fontin Sans';
-  src: url('/fonts/fontin_sans_r_45b-webfont.eot');
-  src: local('☺'), url('/fonts/fontin_sans_r_45b-webfont.woff') format('woff'), url('/fonts/fontin_sans_r_45b-webfont.ttf') format('truetype'), url('/fonts/fontin_sans_r_45b-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Ubuntu';
-  src: url('/fonts/ubuntu-b-webfont.eot');
-  src: local('☺'), url('/fonts/ubuntu-b-webfont.woff') format('woff'), url('/fonts/ubuntu-b-webfont.ttf') format('truetype'), url('/fonts/ubuntu-b-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Ubuntu';
-  src: url('/fonts/ubuntu-BI-webfont.eot');
-  src: local('☺'), url('/fonts/ubuntu-BI-webfont.woff') format('woff'), url('/fonts/ubuntu-BI-webfont.ttf') format('truetype'), url('/fonts/ubuntu-BI-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 700;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Ubuntu';
-  src: url('/fonts/ubuntu-I-webfont.eot');
-  src: local('☺'), url('/fonts/ubuntu-I-webfont.woff') format('woff'), url('/fonts/ubuntu-I-webfont.ttf') format('truetype'), url('/fonts/ubuntu-I-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Ubuntu';
-  src: url('/fonts/ubuntu-r-webfont.eot');
-  src: local('☺'), url('/fonts/ubuntu-r-webfont.woff') format('woff'), url('/fonts/ubuntu-r-webfont.ttf') format('truetype'), url('/fonts/ubuntu-r-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Nobile';
-  src: url('/fonts/nobile_bold-webfont.eot');
-  src: local('âº'), url('/fonts/nobile_bold-webfont.woff') format('woff'), url('/fonts/nobile_bold-webfont.ttf') format('truetype'), url('/fonts/nobile_bold-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Nobile';
-  src: url('/fonts/nobile_bold_italic-webfont.eot');
-  src: local('âº'), url('/fonts/nobile_bold_italic-webfont.woff') format('woff'), url('/fonts/nobile_bold_italic-webfont.ttf') format('truetype'), url('/fonts/nobile_bold_italic-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 700;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Nobile';
-  src: url('/fonts/nobile_italic-webfont.eot');
-  src: local('âº'), url('/fonts/nobile_italic-webfont.woff') format('woff'), url('/fonts/nobile_italic-webfont.ttf') format('truetype'), url('/fonts/nobile_italic-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Nobile';
-  src: url('/fonts/nobile-webfont.eot');
-  src: local('âº'), url('/fonts/nobile-webfont.woff') format('woff'), url('/fonts/nobile-webfont.ttf') format('truetype'), url('/fonts/nobile-webfont.svg#webfontX4pGz9fc') format('svg');
-  font-weight: 400;
-  font-style: normal;
-}
 
 /* ==|== media queries ====================================================== */
 /* Screen width <= 320px */
