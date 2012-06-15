@@ -13,7 +13,7 @@
 #blr {
 
   /* ==|== normalize ======================================== */
-  .normalize(@selectBackgroundColor: #fe57a1, @selectTextColor: #fff, @aHoverColor: #00e, @aVisitedColor: #551a8b, @aHoverColor: #06e) {
+  .normalize(@selectBackgroundColor: #fe57a1, @selectTextColor: #fff, @aColor: #00e, @aVisitedColor: #551a8b, @aHoverColor: #06e) {
 
     /* =============================================================================
        HTML5 display definitions
@@ -55,7 +55,7 @@
        Links
        ========================================================================== */
 
-    a { color: @aHoverColor; }
+    a { color: @aColor; }
     a:visited { color: @aVisitedColor; }
     a:hover { color: @aHoverColor; }
     a:focus { outline: thin dotted; }

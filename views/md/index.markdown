@@ -1,5 +1,8 @@
-### Topic or Title
+### Hi,
+#### I'm a freelance web developer.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti.
+This very website is one of my latest creations. Here you can find the blog posts I write, samples of my work, music I've made, and perhaps even love.
 
-Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+The site, gamma-node, is built on the new and promising [Node.js](http://nodejs.org). It uses the [Jade](http://jade-lang.com) templating language to define markup, [LESS](http://lesscss.org/) and [Stylus](http://learnboost.github.com/stylus/) for styles, and glorious [CoffeeScript](http://coffeescript.org/) instead of nasty vanilla JavaScript. As the machine demands, I strive for perfection in my code and markup, mainly in the context of modern (non-IE) browsers.
+
+You can view or contribute to [its source code](https://github.com/zachfogg/gamma-node) if you like!

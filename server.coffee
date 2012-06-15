@@ -8,17 +8,17 @@ markdown = (require "markdown").markdown.toHTML
 server = express.createServer()
 port   = process.env.PORT or 8000
 server.configure ->
-    server.set "views", __dirname + "/views"
-    server.set "view engine", "jade"
-    server.set 'view options', layout: false, pretty: true
-    server.use (require "connect-assets") src: "static"
-    server.use connect.static __dirname + "/static"
-    server.use connect.bodyParser()
-    server.use express.cookieParser()
-    server.use express.session secret: "gamma"
-    server.use server.router
+  server.set "views", __dirname + "/views"
+  server.set "view engine", "jade"
+  server.set 'view options', layout: false, pretty: true
+  server.use (require "connect-assets") src: "static"
+  server.use connect.static __dirname + "/static"
+  server.use connect.bodyParser()
+  server.use express.cookieParser()
+  server.use express.session secret: "gamma"
+  server.use server.router
 
-    null
+  null
 
 # Routes
 server.get "/", (req, res) ->
@@ -29,8 +29,18 @@ server.get "/", (req, res) ->
         title: "ZF",
         description: "Zach Fogg's personal public-facing website.",
         author: "Zach Fogg"
-        analyticssiteid: "XXXXXXX"
         content: markdown content
+
+server.get /^\/((\/?[\w-]+)*)/, (req, res) ->
+  fs.readFile "views/md/#{req.params[0]}.markdown", 'utf8', (e, content) ->
+    if e then res.render "404"
+    else
+      res.render req.params[0],
+        locals:
+          title: "ZF",
+          description: "Zach Fogg's personal public-facing website.",
+          author: "Zach Fogg"
+          content: markdown content
 
 server.get "/500", (req, res) ->
     throw new Error "This is a 500 error."
@@ -41,7 +51,7 @@ server.get "/*", (req, res) ->
 # Error Handling
 server.error (err, req, res, next) ->
   if err instanceof NotFound
-    res.render "404.jade",
+    res.render "404",
       locals:
         title: "404 - Not Found",
         description: "",
@@ -49,7 +59,7 @@ server.error (err, req, res, next) ->
         analyticssiteid: "XXXXXXX",
       status: 404
   else
-    res.render "500.jade",
+    res.render "500",
       locals:
         title : "The Server Encountered an Error",
         description: "",

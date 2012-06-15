@@ -1,45 +1,5 @@
 extends layout/index
 
+
 block content
-  #container-wrapper
-    #container.container_12
-
-      #header
-        #logo.grid_3
-          h1 ZF
-
-        .prefix_2.grid_7
-          ul#nav
-            mixin navItem(text, href, color)
-              a(href=href)
-                li.navItem(style="background-color:"+color)
-                  !=text
-
-            mixin navItem("~/",       "/",                             "rgba(100, 100, 100, 0.5)")
-            mixin navItem("Twitter",  "http://twitter.com/zfogg",      "rgba(236, 116, 151, 0.5)")
-            mixin navItem("Work",     "/work",                         "rgba(244, 118, 80, 0.5)")
-            mixin navItem("Facebook", "http://facebook.com/zach.fogg", "rgba(17, 145, 180, 0.5)")
-            mixin navItem("Canvas",   "/canvas",                       "rgba(18, 186, 163, 0.5)")
-            mixin navItem("Reddit",   "http://reddit.com/u/zfogg",     "rgba(227, 168, 48, 0.5)")
-            mixin navItem("Music",    "/music",                        "rgba(244, 85, 103, 0.5)")
-            mixin navItem("GitHub",   "http://github.com/zachfogg",    "rgba(12, 184, 108, 0.5)")
-
-      #main(role='main')
-        #content-wrapper.grid_7
-          #content!=content
-
-        #sidebar
-          .grid_5
-
-      footer#footer
-        #signature.prefix_8.grid_4
-          p Design and development by 
-            a(href='mailto:zach.fogg@gmail.com') Z. Fogg
-
-  :coffeescript
-    $ ->
-      original_bg_color = ($ "body").css "background-color"
-      ($ ".navItem").mouseover ->
-        ($ "body").css "background-color", (($ @).css "background-color")
-      ($ ".navItem").mouseout ->
-        ($ "body").css "background-color", original_bg_color
+  !=content
