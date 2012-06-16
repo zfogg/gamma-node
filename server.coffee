@@ -23,14 +23,13 @@ server.configure ->
 # Routes
 server.get "/", (req, res) ->
   fs.readFile 'views/md/index.markdown', 'utf8', (e, content) ->
-    console.log req.params
     throw e if e
     res.render "",
       locals:
         title: ""
         content: markdown content
 
-server.get /^\/((\/?[\w-_]+)*)/, (req, res) ->
+server.get /^\/((\/?[\w-]+)*)/, (req, res) ->
   fs.readFile "views/md/#{req.params[0]}.markdown", 'utf8', (e, content) ->
     if e then res.render "404"
     else
