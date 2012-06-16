@@ -23,55 +23,46 @@ server.configure ->
 # Routes
 server.get "/", (req, res) ->
   fs.readFile 'views/md/index.markdown', 'utf8', (e, content) ->
+    console.log req.params
     throw e if e
     res.render "",
       locals:
-        title: "ZF",
-        description: "Zach Fogg's personal public-facing website.",
-        author: "Zach Fogg"
+        title: ""
         content: markdown content
 
-server.get /^\/((\/?[\w-]+)*)/, (req, res) ->
+server.get /^\/((\/?[\w-_]+)*)/, (req, res) ->
   fs.readFile "views/md/#{req.params[0]}.markdown", 'utf8', (e, content) ->
     if e then res.render "404"
     else
       res.render req.params[0],
         locals:
-          title: "ZF",
-          description: "Zach Fogg's personal public-facing website.",
-          author: "Zach Fogg"
+          title: req.params[0]
           content: markdown content
 
 server.get "/500", (req, res) ->
-    throw new Error "This is a 500 error."
+  throw new Error "This is a 500 error."
 
 server.get "/*", (req, res) ->
-    throw new NotFound
+  throw new NotFound
 
 # Error Handling
 server.error (err, req, res, next) ->
   if err instanceof NotFound
     res.render "404",
       locals:
-        title: "404 - Not Found",
-        description: "",
-        author: "",
-        analyticssiteid: "XXXXXXX",
+        title: "404 - Not Found"
       status: 404
   else
-    res.render "500",
+    res.render "500"
       locals:
-        title : "The Server Encountered an Error",
-        description: "",
-        author: "",
-        analyticssiteid: "XXXXXXX",
-        error: err,
+        title : "The Server Encountered an Error"
+        error: err
       status: 500
 
 NotFound = (msg) ->
-    this.name = 'NotFound'
-    Error.call this, msg
-    Error.captureStackTrace this, arguments.callee
+  this.name = 'NotFound'
+  Error.call this, msg
+  Error.captureStackTrace this, arguments.callee
 
 server.listen  port
 console.log "Listening on http://0.0.0.0:" + port
