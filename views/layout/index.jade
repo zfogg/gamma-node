@@ -34,8 +34,16 @@ html.no-js(lang='en')
       #bg-gradient
         #container.container_12
           #header.unselectable
-            #logo.grid_5
-              h1 ZF
+
+            a(href="/")
+              #logo.grid_5
+                h1
+                  span#logo-fname
+                    span.logo-text#logo-z Z
+                    span.logo-text#logo-ach ach
+                  span#logo-lname
+                    span.logo-text#logo-f F
+                    span.logo-text#logo-ogg ogg
 
             ul#nav.grid_7
               mixin navItem(text, href, color)

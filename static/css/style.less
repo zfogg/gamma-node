@@ -10,7 +10,7 @@
 
 /* ==|== HTML5 ✰ Boilerplate LESS library =========================== */
 @import 'libs/boilerplate.less';
-#blr.normalize(lighten(@color_navy, 20%), @color_dark-gray, @color_teal, desaturate(@color_teal, 40%), spin(@color_teal, -20));
+#blr.normalize(lighten(@color_navy, 20%), @color_dark-gray, @color_teal, desaturate(@color_teal, 30%), spin(@color_teal, -20));
 * { margin: 0; }
 html, body {
   height: 100%;
@@ -54,10 +54,11 @@ body {
   text-shadow: 2px 1px 2px fade(@color_dark-gray, 70);
 
   h1 {
+    color: @color_dark-gray;
     font-size: 5em;
     letter-spacing: 0.12em;
-    text-shadow:  7px  7px @color_dark-gray,
-                 -7px -7px @color_dark-gray;
+    text-shadow: 0 -4px 1px lighten(@color_frost, 10%),
+                 -8px 10px 20px fade(@color_dark-gray, 40%);
   }
   h2 {
     font-size: 2.0em;
@@ -77,6 +78,7 @@ body {
     margin-bottom: 0.2em;
   }
   p {
+    font-size: 1.045em;
     margin: 0.5em;
   }
   .console-font { font-family: 'Lucida Console', Monaco, monospace; font-size: 0.8em; }
@@ -98,24 +100,41 @@ body {
           margin-top: @header_size/3;
           margin-bottom: @header_size/7;
           #logo {
+            #logo-fname, #logo-lname {
+              #logo-z, #logo-f { display: inline-block; }
+              #logo-z { width: 110px; }
+              #logo-f { width: 90px; }
+              #logo-ach, #logo-ogg {
+                display: inline-block;
+                overflow: hidden;
+                width: 0;
+                opacity: 0;
+                font-size: 0.4em;
+                letter-spacing: 0.01em;
+              }
+              #logo-z:hover + #logo-ach, #logo-f:hover + #logo-ogg {
+                #hl.transition();
+                overflow: visible;
+                width: auto;
+                opacity: 1;
+              }
+            }
             position: relative;
             height: @header_size;
-            &:hover h1 { left: 140px; }
             line-height: 11*@header_size/13;
-            cursor: default;
             h1 {
               position: absolute;
               left: 0;
               #hl.transition(all, .5s, ease);
-              font-family: 'Arial Black', Gadget, sans-serif;
+              font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
               font-weight: 900;
               font-size: 5*(@header_size/4);
-              letter-spacing: 0.17em;
+              letter-spacing: 0.07em;
             }
           } // #logo
           #nav {
             #hl.ui.list.subtle();
-            @color_nav-shadow: fade(@color_dark-gray, 35%);
+            @color_nav-shadow: fade(@color_dark-gray, 20%);
             .box-shadow(~"8px 10px 20px @{color_nav-shadow}, -8px 10px 20px @{color_nav-shadow}");
             .border-radius(3px, 3px, 3px, 3px);
             width: @navWidth;
