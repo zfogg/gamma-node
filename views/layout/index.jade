@@ -45,20 +45,21 @@ html.no-js(lang='en')
                     span.logo-text#logo-f F
                     span.logo-text#logo-ogg ogg
 
-            ul#nav.grid_7
-              mixin navItem(text, href, color)
-                a(href=href)
-                  li.navItem(id="navItem-"+color, class="bg-color-"+color)
-                    =text
+            #nav-wrapper
+              ul#nav.grid_7
+                mixin navItem(text, href, color)
+                  a(href=href)
+                    li.navItem(id="navItem-"+color, class="bg-color-"+color)
+                      =text
 
-              mixin navItem("~/",       "/",                             "glass")
-              mixin navItem("Twitter",  "http://twitter.com/zfogg",      "pink")
-              mixin navItem("Work",     "/work",                         "tan")
-              mixin navItem("Facebook", "http://facebook.com/zach.fogg", "navy")
-              mixin navItem("Canvas",   "/canvas",                       "teal")
-              mixin navItem("Reddit",   "http://reddit.com/u/zfogg",     "gold")
-              mixin navItem("Music",    "/music",                        "grapefruit")
-              mixin navItem("GitHub",   "http://github.com/zachfogg",    "mint")
+                mixin navItem("~/",       "/",                             "glass")
+                mixin navItem("Twitter",  "http://twitter.com/zfogg",      "pink")
+                mixin navItem("Work",     "/work",                         "tan")
+                mixin navItem("Facebook", "http://facebook.com/zach.fogg", "navy")
+                mixin navItem("Canvas",   "/canvas",                       "teal")
+                mixin navItem("Reddit",   "http://reddit.com/u/zfogg",     "gold")
+                mixin navItem("Music",    "/music",                        "grapefruit")
+                mixin navItem("GitHub",   "http://github.com/zachfogg",    "mint")
 
           #main(role='main')
             #content-wrapper.grid_7
