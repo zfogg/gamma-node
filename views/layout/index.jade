@@ -4,7 +4,7 @@
 //if IE 7
   html.no-js.ie7.oldie(lang='en')
 //if IE 8
-  html.no-js.ie8.oldie(lang='en') 
+  html.no-js.ie8.oldie(lang='en')
 //[if gt IE 8]><!
 html.no-js(lang='en')
   //<![end if]
@@ -18,11 +18,11 @@ html.no-js(lang='en')
     link(rel="shortcut icon", href="#") // TODO: get a real favicon.
 
     != css('style')
-    link(rel='stylesheet', href='/css/fluid_960_12_col.css')
+    != css('libs/960_12_col')
     block css
 
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
-    script(src='/js/libs/modernizr-2.0.6.min.js')
+    != js('libs/modernizr-2.0.6.min')
     != js('gammalib')
     block js
 
@@ -52,24 +52,21 @@ html.no-js(lang='en')
                     li.navItem(id="navItem-"+color, class="bg-color-"+color)
                       =text
 
-                mixin navItem("~/",       "/",                             "glass")
-                mixin navItem("Twitter",  "http://twitter.com/zfogg",      "pink")
-                mixin navItem("Work",     "/work",                         "tan")
-                mixin navItem("Facebook", "http://facebook.com/zach.fogg", "navy")
-                mixin navItem("Canvas",   "/canvas",                       "teal")
-                mixin navItem("Reddit",   "http://reddit.com/u/zfogg",     "gold")
-                mixin navItem("Music",    "/music",                        "grapefruit")
-                mixin navItem("GitHub",   "http://github.com/zachfogg",    "mint")
+                mixin navItem("~/",        "/",                             "glass")
+                mixin navItem("Twitter",   "http://twitter.com/zfogg",      "pink")
+                mixin navItem("Work",      "/work",                         "tan")
+                mixin navItem("Facebook",  "http://facebook.com/zach.fogg", "navy")
+                mixin navItem("Canvas",    "/canvas",                       "teal")
+                mixin navItem("Instagram", "http://instajelly.com/zfogg",   "gold")
+                mixin navItem("About",     "/About",                        "grapefruit")
+                mixin navItem("GitHub",    "http://github.com/zachfogg",    "mint")
 
           #main(role='main')
-            #content-wrapper.grid_7
-              #content
-                block content
-
-              #sidebar
-                .grid_5
+            block content
 
           #footer.unselectable
+            .grid_8
+              block footer
             #signature.grid_12
               p Design and development by 
                 a(href='mailto:zach.fogg@gmail.com') Z. Fogg

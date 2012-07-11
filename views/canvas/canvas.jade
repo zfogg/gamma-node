@@ -1,0 +1,22 @@
+extends ../layout/index
+
+append js
+  != js('canvas/canvas-tools')
+  != js('canvas/html5slider')
+  != js('canvas/canvas-controls')
+  != js('canvas/'+canvasScript)
+
+append css
+  != css('canvas')
+
+block content
+  #content-wrapper.grid_12
+    #content
+      #canvas-container.unselectable
+        canvas#canvas(oncontextmenu="return false;")
+        #canvas-controls-container
+          h4#toggle-menu
+            a Show
+            |  controls.
+          #canvas-controls
+            h4 Canvas Controls

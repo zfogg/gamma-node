@@ -1,5 +1,25 @@
 extends layout/index
 
+append css
+  != css("instagram")
+
+append js
+  != js("libs/jqinstapics.min")
 
 block content
-  !=content
+  #content-wrapper.grid_7
+    #content
+      !=content
+
+  #sidebar.grid_5
+    #instagram-wrapper.unselectable
+      h3
+        span instagram
+        span#instagram-name @zfogg
+      ul#instagram
+
+      :coffeescript
+        $("#instagram").jqinstapics
+          user_id: "46707644"
+          access_token: "46707644.674061d.fe51e6fd894b42bf87cfad31cb9ca471"
+          count: 4

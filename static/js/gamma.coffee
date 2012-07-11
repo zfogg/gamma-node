@@ -12,7 +12,10 @@ $ ->
 
   replaceBGColor = (e, color) ->
     Gamma.replaceClass e, /bg-color-.*/, color
+  headerH1Color = ($ "#header h1").css "color"
   ($ ".navItem").mouseover ->
     replaceBGColor ($ "body")[0], "bg-color-"+@.id.split('-')[1]
+    ($ "#header h1").css "color", ($ @).css "background-color"
   ($ ".navItem").mouseout ->
     replaceBGColor ($ "body")[0], body_bg_color
+    ($ "#header h1").css "color", headerH1Color

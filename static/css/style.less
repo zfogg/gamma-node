@@ -10,7 +10,12 @@
 
 /* ==|== HTML5 ✰ Boilerplate LESS library =========================== */
 @import 'libs/boilerplate.less';
-#blr.normalize(lighten(@color_navy, 20%), @color_dark-gray, @color_teal, desaturate(@color_teal, 30%), spin(@color_teal, -20));
+@selectBackgroundColor: darken(    @color_navy,       20%);
+@selectTextColor:                  @color_frost;
+@aColor:                lighten(   @color_teal,       15%);
+@aVisitedColor:         desaturate(@aColor,           30%);
+@aHoverColor:           spin(      @aColor,           20);
+#blr.normalize(@selectBackgroundColor, @selectTextColor, @aColor, @aVisitedColor, @aHoverColor);
 * { margin: 0; }
 html, body {
   height: 100%;
@@ -41,40 +46,34 @@ html, body {
   -ms-user-select: none;
   user-select: none;
 }
-.keyframes (@name, @frames) {
-  @-webkit-keyframes @name {@frames}
-  @-moz-keyframes    @name {@frames}
-  @-ms-keyframes     @name {@frames}
-  @-o-keyframes      @name {@frames}
-  @keyframes         @name {@frames}
-}
 
 body {
   #hl.transition(background-color, .8s, ease-out);
   text-shadow: 2px 1px 2px fade(@color_dark-gray, 70);
+  color: white;
 
+  font-size: 1.125em;
   h1 {
     font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
     font-size: 5em;
     font-weight: 900;
     letter-spacing: 0.07em;
-    color: saturate(@color_dark-gray, 25%);
+    color: darken(saturate(@color_dark-gray, 50%), 10%);
     text-shadow:  0  -4px  1px  lighten(@color_frost,     10%),
                  -8px 10px 20px fade(   @color_dark-gray, 40%);
   }
   h2 {
-    font-size: 2.0em;
+    font-size: 3.0em;
     margin-bottom: 0.1em;
     margin-top: 0.4em;
   }
   h3 {
-    .hpad;
-    font-size: 2.0em;
-    margin-top: 0.3em;
-    margin-bottom: 0.2em;
+    font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+    font-size: 2em;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   h4 {
-    .hpad;
     font-size: 1.3em;
     margin-bottom: 0.2em;
   }
@@ -86,118 +85,109 @@ body {
 
   #bg-image {
     .full-height();
-    overflow: auto;
     background: url("/images/bg.png") repeat;
     #bg-gradient {
       .full-height();
       overflow: auto;
-      #hl.radial-gradient(~"50% 45%, rgba(255, 255, 255, 0.1), rgba(149, 149, 149, 0.4) 32%,rgba(36, 36, 36, 0.8) 74%, rgba(0,0,0,1) 100%");
-      #container {
-        margin: 0 auto;
-        max-width: 960px;
-        font-size: 1.28em;
-        padding-bottom: 20px;
-        #header {
+      #hl.radial-gradient(~"50% 45%, rgba(235, 235, 235, 0.3), rgba(149, 149, 149, 0.5) 30%,rgba(96, 96, 96, 0.7) 54%, rgba(20,20,20,0.9) 120%");
+      #header {
+        height: @header_size;
+        color: white;
+        margin-top: @header_size/3;
+        margin-bottom: @header_size/7;
+        a { text-decoration: none; }
+        #logo {
+          #logo-fname, #logo-lname {
+            z-index: -1;
+            #logo-z, #logo-f { display: inline-block; }
+            #logo-z { width: 110px; }
+            #logo-f { width: 80px; }
+            #logo-ach, #logo-ogg {
+              font-size: 0.4em;
+              letter-spacing: 0.01em;
+            }
+            #logo-z:hover + #logo-ach, #logo-f:hover + #logo-ogg {
+              #hl.transition(all, 0.75s, ease-out);
+              overflow: visible;
+              width: auto;
+              opacity: 1;
+            }
+          }
+          position: relative;
           height: @header_size;
-          color: white;
-          margin-top: @header_size/3;
-          margin-bottom: @header_size/7;
-          a { text-decoration: none; }
-          #logo {
-            min-width: 380px;
-            #logo-fname, #logo-lname {
-              #logo-z, #logo-f { display: inline-block; }
-              #logo-z { width: 110px; }
-              #logo-f { width: 80px; }
-              #logo-ach, #logo-ogg {
-                font-size: 0.4em;
-                letter-spacing: 0.01em;
-              }
-              #logo-z:hover + #logo-ach, #logo-f:hover + #logo-ogg {
-                #hl.transition(opacity, 0.75s, ease-out);
-                overflow: visible;
-                width: auto;
-                opacity: 1;
-              }
-            }
-            position: relative;
-            height: @header_size;
-            line-height: 11*@header_size/13;
-            h1 {
-              #hl.transition(all, .5s, ease);
-              font-size: 5*(@header_size/4);
-            }
-          } // #logo
-          #nav-wrapper {
-            #nav {
+          line-height: 11*@header_size/13;
+          h1 {
+            #hl.transition(all, .5s, ease);
+            font-size: 5*(@header_size/4);
+          }
+        } // #logo
+        #nav-wrapper {
+          #nav {
+            #hl.ui.list.subtle();
+            @color_nav-shadow: fade(@color_dark-gray, 20%);
+            .box-shadow(~"8px 10px 20px @{color_nav-shadow}, -8px 10px 20px @{color_nav-shadow}");
+            .border-radius(3px, 3px, 3px, 3px);
+            width: @navWidth;
+            height: @navHeight;
+            overflow: hidden;
+            .navItem {
               #hl.ui.list.subtle();
-              @color_nav-shadow: fade(@color_dark-gray, 20%);
-              .box-shadow(~"8px 10px 20px @{color_nav-shadow}, -8px 10px 20px @{color_nav-shadow}");
-              .border-radius(3px, 3px, 3px, 3px);
-              width: @navWidth;
-              height: @navHeight;
-              overflow: hidden;
-              .navItem {
-                #hl.ui.list.subtle();
-                #hl.transition(all, .2s, ease-out);
-                .box-shadow(~"inset 0 -5px 10px rgba(80, 80, 80, 0.7)");
-                float: left;
-                width: @navWidth/2;
-                line-height: @navHeight/4;
-                color: white;
-                font-weight: bold;
-                text-align: center;
-                &:hover {
-                  .bg-color-frost();
-                  .box-shadow(~"inset 2px 5px 15px rgba(50, 50, 50, 0.8), inset -2px 0 15px rgba(70, 70, 70, 0.8)");
-                  color: @color_dark-gray;
-                }
-              } // .navItem
-            } // #nav
-          }
-        } // #header
-        #main {
-          clear: both;
-          .vexpand;
-          padding-top: 10px;
-          padding-bottom: 10px;
-          .border-radius(4px, 0, 0, 4px);
-          .box-shadow(~"-2px 2px 5px #555, 2px 1px 5px #555, inset 2px 0 8px #222, inset -2px -3px 8px #222");
-          #hl.background-gradient(fade(lighten(@color_dark-gray, 10%), 65%),
-                                  fade(darken( @color_dark-gray, 15%), 40%),
-                                  fade(        @color_dark-gray, 50%)     );
-          li {
-            padding-bottom: 0.2em;
-            padding-top: 0.2em;
-          }
-          ul > li:first-child { padding-top: 0em; }
-          #content-wrapper {
-            #content {
-              min-width: 320px;
+              #hl.transition(all, .2s, ease-out);
+              .box-shadow(~"inset 0 -5px 10px rgba(80, 80, 80, 0.7)");
+              float: left;
+              width: @navWidth/2;
+              line-height: @navHeight/4;
               color: white;
-              .hpad;
-              h3 { display: inline-block; }
-              h3 + h4 { display: inline-block; }
-              p { margin-top: 0.4em; }
-            } // #content
-          } // #content-wrapper
-        } // #main
-        #footer {
-          .border-radius(0, 8px, 8px);
-          #hl.background-gradient(fade(lighten(@color_dark-gray, 20%), 75%),
-                                  fade(darken( @color_dark-gray, 20%), 50%),
-                                  fade(        @color_dark-gray, 50%)     );
-          .box-shadow(~"2px 1px 5px @{color_dark-gray}, -2px 1px 5px @{color_dark-gray}");
-          .vexpand;
-          #signature {
-            p {
-              .console-font;
-              text-align: right;
-              color: @color_frost;
+              font-weight: bold;
+              text-align: center;
+              &:hover {
+                .bg-color-frost();
+                .box-shadow(~"inset 2px 5px 15px rgba(50, 50, 50, 0.8), inset -2px 0 15px rgba(70, 70, 70, 0.8)");
+                color: @color_dark-gray;
+              }
+            } // .navItem
+          } // #nav
+        }
+      } // #header
+      #main {
+        clear: both;
+        .vexpand;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        .border-radius(4px, 0, 0, 4px);
+        .box-shadow(~"-2px 2px 5px #555, 2px 1px 5px #555, inset 2px 0 8px #222, inset -2px -3px 8px #222");
+        #hl.background-gradient(fade(lighten(@color_dark-gray, 10%), 5%),
+                                fade(darken( @color_dark-gray, 15%), 60%),
+                                fade(        @color_dark-gray,       15%));
+        ul > li:first-child { padding-top: 0em; }
+        #content-wrapper {
+          #content {
+            color: white;
+            h3 { display: inline-block; }
+            h3 + h4 { display: inline-block; }
+            p { margin-top: 0.4em; }
+            li {
+              padding-bottom: 0.2em;
+              padding-top: 0.2em;
             }
-          } // #signature
-        } // #footer
-      } // #container
+          } // #content
+        } // #content-wrapper
+      } // #main
+      #footer {
+        .border-radius(0, 8px, 8px);
+        #hl.background-gradient(fade(        @color_dark-gray,       85%),
+                                fade(darken( @color_dark-gray, 40%), 30%),
+                                fade(        @color_dark-gray, 50%)  20%);
+        .box-shadow(~"2px 1px 8px @{color_dark-gray}, -2px 1px 4px @{color_dark-gray}");
+        .vexpand;
+        #signature {
+          p {
+            .console-font;
+            text-align: right;
+            color: @color_frost;
+          }
+        } // #signature
+      } // #footer
     } // #bg-image
   } // #bg-gradient
 } // body
@@ -216,15 +206,17 @@ body {
 
 /* Screen width > 480px */
 @media only screen and (max-width: 768px) {
+  @logo-padding: 30;
   #header {
-    height: 10+@header_size*2px !important;
+    height: @logo-padding+@header_size*2px !important;
   }
   #logo {
     width: 530px;
-    padding-bottom: 10px;
+    margin-bottom: @logo-padding+0px;
     #logo-fname { padding-left: 40px; }
     #logo-lname { padding-right: 40px; float: right; }
   }
+  #nav { }
   #main, #footer { width: 540px; }
 }
 

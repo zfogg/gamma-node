@@ -1,0 +1,47 @@
+@margin_size: 20px;
+
+#instagram-wrapper {
+  padding-right: @margin_size;
+
+  h3 { text-align: center; }
+
+  #instagram {
+    margin: 0 auto @margin_size auto;
+    padding: 0;
+
+    li {
+      background-color: darken(white, 15%);
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 10px 0;
+      list-style: none;
+      float: left;
+
+      img {
+        padding: 5px;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+} } }
+
+@media only screen and (min-width: 769px) {
+  #content { margin-left: @margin_size; }
+
+  #instagram-wrapper {
+    margin-left: @margin_size;
+
+    #instagram {
+      li:nth-child(2n) {
+        float: right;
+      }
+} } }
+
+@media only screen and (max-width: 768px) {
+  #instagram-wrapper {
+    padding-left: 10px;
+
+    #instagram-name { display: block; }
+
+    #instagram li {
+      float: right; }
+  } }

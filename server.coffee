@@ -24,19 +24,28 @@ server.configure ->
 server.get "/", (req, res) ->
   fs.readFile 'views/md/index.markdown', 'utf8', (e, content) ->
     throw e if e
-    res.render "",
+    res.render '',
       locals:
-        title: ""
+        title: ''
         content: markdown content
+
+server.get /^\/canvas\/?$/, (req, res) ->
+  res.render "canvas"
+    title: ''
+
+server.get /^\/canvas\/([\w-]+\/?)+/, (req, res) ->
+  name = req.params[0].split('/').reverse()[0]
+  res.render "canvas/canvas",
+    canvasScript: name
+    title: name
 
 server.get /^\/((\/?[\w-]+)*)/, (req, res) ->
   fs.readFile "views/md/#{req.params[0]}.markdown", 'utf8', (e, content) ->
     if e then res.render "404"
     else
       res.render req.params[0],
-        locals:
-          title: req.params[0]
-          content: markdown content
+        title: req.params[0]
+        content: markdown content
 
 server.get "/500", (req, res) ->
   throw new Error "This is a 500 error."
