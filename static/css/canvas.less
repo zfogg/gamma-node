@@ -1,3 +1,5 @@
+@import "helpers.less";
+
 body {
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
@@ -19,32 +21,35 @@ body {
 #canvas-controls-container {
   display: none; /* Your script can enable this if you need controls. */
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 10px;
+  left: 5px;
   font-weight: bold;
   font-size: 13.5px;
 
-  a { cursor: pointer; }
-
-  #toggle-menu { font-size: 1.61em; }
-  #toggle-menu a {
-    text-transform: capitalize;
-    text-decoration: underline;
+  #toggle-menu {
+    cursor: default;
+    font-size: 1.61em;
+    a { cursor: pointer; }
   }
 
   #canvas-controls {
     display: none;
-    max-width: 480px;
-    height: 1%;
-    overflow: hidden;
+    max-width: 3*160px;
+    .vexpand();
     background: rgba(40, 40, 40, 0.85);
-    padding: 7px;
+    padding: 9px;
     margin-top: 25px;
     border-radius: 4px;
-    box-shadow: 3px 3px 6px rgb(50, 50, 90),
-                -4px -4px 12px rgb(110, 140, 150);
+    box-shadow:  3px  3px 6px rgb(50,  50,  90),
+                -3px -3px 6px rgb(90, 180, 140);
+
     .canvas-control {
       text-align: center;
+      position: relative;
+      float: left;
+      width: 160px;
+      height: 80px;
+
       input {
         position: absolute;
         bottom: 0;
@@ -59,19 +64,6 @@ body {
       input[type=button] {
         margin-left: -65px;
       }
-      position: relative;
-      float: left;
-      width: 160px;
-      height: 80px;
-    }
-
-    h4 {
-      margin-bottom: 0.5em;
-    }
-    p, h3 {
-      color: white;
-      margin-bottom: 0.2em;
-      text-shadow: 2px 0 3px black;
     }
 
     input {

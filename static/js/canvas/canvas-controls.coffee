@@ -1,4 +1,5 @@
-# Dependencies: canvas-tools
+# Slider elements on Firefox:
+#= require ../libs/html5slider
 
 window.CanvasControls = class
   constructor: ->
@@ -66,10 +67,11 @@ window.CanvasControls = class
 
 $ ->
   ($ "#canvas-controls-container").show()
-  ($ "#toggle-menu a").click (event) ->
-    if event.which is 1
+  link = $ "#toggle-menu a"
+  link.click (click) ->
+    if click.which is 1
       ($ "#canvas-controls").slideToggle "slow"
-      if (($ "#toggle-menu a").text().indexOf "Show") is -1
-        ($ "#toggle-menu a").text "Show"
-    else
-      ($ "#toggle-menu a").text "Hide"
+      if link.text() is "Show"
+        link.text "Hide"
+      else
+        link.text "Show"

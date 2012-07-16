@@ -4,11 +4,6 @@
 Fn =
   id: (x) -> x
 
-  map: (f, xs) -> f x for x in xs
-
-  take: (n, xs) -> xs[0...n]
-  drop: (n, xs) -> xs[n..]
-
  #fold :: (a -> b -> b) -> [a] -> a -> b
   fold: (f, xs, acc) ->
     if xs.length > 0
@@ -18,9 +13,13 @@ Fn =
   fold1: (f, xs) ->
     Fn.fold f, xs.tail(), xs.head()
 
- #zip: [a] -> [b] -> [[a, b]]
+ #zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+  zipWith: (f, xs, ys) ->
+    f xs[i], ys[i] for i in [0...Math.min xs.length, ys.length]
+
+ #zip :: [a] -> [b] -> [[a, b]]
   zip: (xs, ys) ->
-    [xs[i], ys[i]] for i in [0...Math.min xs.length, ys.length]
+    C$.Fn.zipWith ((x, y) -> [x, y]), xs, ys
 
   all: (p, xs) ->
     false not in Fn.map p, xs
@@ -95,8 +94,9 @@ $Math =
     $Math.hypotenuse d.x, d.y
 
   roundDigits: (n, digits) ->
-    parseFloat \
-      ((Math.round (n * (Math.pow 10, digits)).toFixed(digits-1)) / (Math.pow 10,digits)).toFixed digits
+    parseFloat ((Math.round \
+      (n * (Math.pow 10, digits)).toFixed(digits-1)) / (Math.pow 10,digits)
+    ).toFixed digits
 
   randomBetween: (min, max) -> Math.random() * (max - min) + min
 
@@ -128,14 +128,14 @@ Array::last = -> @[@length-1]
 Array::init = -> @[0..@length-2]
 Array::tail = -> @[1..]
 
-Array::fWhile = (f, p) ->
+Array::iWhile = (p) ->
   i = 0
   i++ while p @[i]
-  f i, @
+  i
 Array::takeWhile = (p) ->
-  @fWhile Fn.take, p
+  @[0..(@iWhile p)-1]
 Array::dropWhile = (p) ->
-  @fWhile Fn.drop, p
+  @[(@iWhile p)..]
 
 Array::toSet = ->
   s = {}
@@ -173,8 +173,8 @@ window.C$ =
         x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft
         y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop
       p = C$.findElementPosition element
-      cursor.x = x - element.offsetLeft - p.x
-      cursor.y = y - element.offsetTop - p.y
+      cursor[0] = x - element.offsetLeft - p.x
+      cursor[1] = y - element.offsetTop  - p.y
 
   findElementPosition: (obj) ->
     if obj.offsetParent
@@ -189,10 +189,37 @@ window.C$ =
 
   # Classes
 
-  Vector2: class
-    constructor: (@x, @y) ->
+C$.Vector2 = class
+  constructor: (@x, @y) ->
 
-    Zero: -> new C$.Vector2 0, 0
+  Zero: -> new C$.Vector2 0, 0
+
+C$.ObjectPool = class
+  constructor: (count, @cons, @zero) ->
+    @deep = (@new() for i in [1..count])
+
+  get: ->
+    if @deep.length > 0
+      @deep.pop()
+    else @new()
+
+  put: (x) ->
+    @deep.push @zero x
+
+  new: -> @zero @cons()
+
+C$.Vector2Pool = class extends C$.ObjectPool
+  constructor: (count) ->
+    super count,
+      -> new Float32Array 2,
+      (v) ->
+        v[0] = 0; v[1] = 0
+        v
+
+  get: (x, y) ->
+    v = super()
+    v[0] = x if x; v[1] = y if y
+    v
 
 window.requestFrame = do ->
   window.requestAnimationFrame       or

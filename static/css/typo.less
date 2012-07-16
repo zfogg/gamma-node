@@ -1,0 +1,38 @@
+text-shadow: 2px 1px 2px fade(@color_dark-gray, 70);
+color: @color_frost;
+font-size: 1em;
+
+h1 {
+  font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+  font-size: 5em;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  color: darken(saturate(@color_dark-gray, 50%), 10%);
+  text-shadow:  0  -4px  1px  lighten(@color_frost,      10%),
+                -8px 10px 20px fade(   @color_dark-gray, 40%);
+}
+h2 {
+  font-size: 3.0em;
+  margin-bottom: 0.1em;
+  margin-top: 0.4em;
+}
+h3 {
+  font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+  font-size: 2.4em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+h4 {
+  font-size: 1.5em;
+  margin-bottom: 0.2em;
+}
+p {
+  font-size: 1.1em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.console-font {
+  font-family: 'Lucida Console', Monaco, monospace;
+  font-size: 0.65em;
+}
