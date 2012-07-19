@@ -16,10 +16,10 @@ window.Gravity = (canvas) ->
   vars.vectors  = vectors  = new C$.Vector2Pool 1000
   vars.gameTime = 0
 
-  defaultGravity        = (C$.Math.randomBetween 7, 9) * Math.pow 10, -6
-  defaultFriction       = (C$.Math.randomBetween 4, 6) * Math.pow 10, -4
-  defaultDistance       = (C$.Math.randomBetween 6, 9)
-  defaultCursorFriction = (C$.Math.randomBetween 1, 2)
+  defaultGravity        = (C$.Math.randomBetween 4, 9) * Math.pow 10, -4
+  defaultFriction       = (C$.Math.randomBetween 2, 6) * Math.pow 10, -4
+  defaultDistance       = (C$.Math.randomBetween 5, 9)
+  defaultCursorFriction = (C$.Math.randomBetween 1, 4)
   defaultCursorMass     = 1750
   defaultCursorForce    = 0.65
 
@@ -36,24 +36,20 @@ window.Gravity = (canvas) ->
     attractionOfGravity = (b1, b2) ->
       d = direction b1.position, b2.position
       r = hypotenuse d[0], d[1]
-
       v = vectors.get()
-      if r isnt 0 and r > CC_distance.values.current
-        g = gravity CC_gravity.values.current, b1.mass, b2.mass, r
+
+      if (r isnt 0) and (r > CC_distance.values.current)
+        g = (CC_gravity.values.current*b1.mass*b2.mass) / (Math.pow r, 2)
         v[0] = -d[0] / r*g; v[1] = -d[1] / r*g
+
       vectors.put d
-      v
-
-    gravity = (G, m1, m2, r) -> G*m1*m2 / r*r
-
-    negateV2 = (v) ->
-      v[0] = -v[0]; v[1] = -v[1]
       v
 
     (body1, body2) ->
       f = attractionOfGravity body1, body2
       body1.applyForce f
-      body2.applyForce negateV2 f
+      f[0] = -f[0]; f[1] = -f[1]
+      body2.applyForce f
       vectors.put f
 
   vars.forceTowards = forceTowards = (from, to, coEf = 1) ->
@@ -134,9 +130,11 @@ window.Gravity = (canvas) ->
   # Keyboard Events
   Mousetrap.bind 'space', ->
     for s in squares
+      r = (p, k) ->
+        [-1, 1].random() * C$.Math.randomBetween p, k
       s.applyForce vectors.get \
-        ([-1, 1].random() * C$.Math.randomBetween 4, 7),
-        ([-1, 1].random() * C$.Math.randomBetween 4, 7)
+        [(r 4, 8), (r 1, 4)].random(),
+        [(r 4, 8), (r 1, 4)].random()
 
   # Init.
   Body   = PhysicalBody   vars

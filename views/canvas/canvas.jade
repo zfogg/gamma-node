@@ -1,10 +1,7 @@
 extends ../layout/index
 
 append js
-  != js('canvas/canvas-tools')
-  != js('canvas/html5slider')
-  != js('canvas/canvas-controls')
-  != js('canvas/'+canvasScript)
+  != js('canvas/'+canvasScript+'/index')
 
 append css
   != css('canvas')

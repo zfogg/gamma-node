@@ -7,14 +7,17 @@ markdown = (require "markdown").markdown.toHTML
 # Config
 server = express.createServer()
 port   = process.env.PORT or 8000
+
 server.configure ->
   server.set "views", __dirname + "/views"
   server.set "view engine", "jade"
-  server.set 'view options', layout: false, pretty: true
+  server.set "view options", layout: false, pretty: true
   server.use (require "connect-assets") src: "static"
   server.use connect.static __dirname + "/static"
-  server.use connect.bodyParser()
+
+  server.use connect.logger ":date | :remote-addr | :method (:referrer) -> (:url)"
   server.use express.cookieParser()
+  server.use express.bodyParser()
   server.use express.session secret: "gamma"
   server.use server.router
 
@@ -22,7 +25,7 @@ server.configure ->
 
 # Routes
 server.get "/", (req, res) ->
-  fs.readFile 'views/md/index.markdown', 'utf8', (e, content) ->
+  fs.readFile "views/md/index.markdown", "utf8", (e, content) ->
     throw e if e
     res.render '',
       locals:
@@ -33,14 +36,14 @@ server.get /^\/canvas\/?$/, (req, res) ->
   res.render "canvas"
     title: ''
 
-server.get /^\/canvas\/([\w-]+\/?)+/, (req, res) ->
+server.get /^\/canvas\/([\w-]+\/?)+$/, (req, res) ->
   name = req.params[0].split('/').reverse()[0]
   res.render "canvas/canvas",
     canvasScript: name
     title: name
 
-server.get /^\/((\/?[\w-]+)*)/, (req, res) ->
-  fs.readFile "views/md/#{req.params[0]}.markdown", 'utf8', (e, content) ->
+server.get /^\/((\/?[\w-]+)*)$/, (req, res) ->
+  fs.readFile "views/md/#{req.params[0]}.markdown", "utf8", (e, content) ->
     if e then res.render "404"
     else
       res.render req.params[0],

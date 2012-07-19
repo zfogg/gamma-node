@@ -87,7 +87,7 @@ $Math =
         new arrayType (Math.sqrt x for x in [minSquare .. maxSquare * pow] by 1.0 / pow)
       hash = (n) -> (n / 100 * pow) | 0
       Fn.memoize table, hash
-    (a, b) -> sqrtTable (a*a + b*b)
+    (a, b) -> (sqrtTable (a*a + b*b)) or (C$.Math.hypotenuse a, b)
 
   distance: (p1, p2) ->
     d = $Math.direction p1, p2

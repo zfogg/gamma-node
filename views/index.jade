@@ -2,6 +2,13 @@ extends layout/index
 
 append css
   != css("instagram")
+  :stylus
+    #content
+      h3
+        display inline-block
+        + h4
+          margin-left 8px;
+          display inline-block
 
 append js
   != js("libs/jqinstapics.min")

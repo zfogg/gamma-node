@@ -1,2 +1,46 @@
 extends ../layout/index
 
+append css
+  :stylus
+    .canvasApp
+      margin 15px 20px 15px 20px
+
+      h3
+        display inline-block
+        + h4
+          margin-left 8px;
+          display inline-block
+      p
+        text-align justify
+
+block content
+  #content-wrapper
+    #content
+
+      mixin canvasAppTitle(title, subtitle)
+        h3 Gravity
+        h4 in a 2D universe.
+
+      mixin canvasAppLinks(links)
+        for link in links
+          p
+            a(href=link[0])=link[1]
+
+      .grid_6.suffix_6
+        .canvasApp
+          mixin canvasAppTitle("Gravity", "in a 2D universe.")
+          p In my physics studies, while learning about gravity, I was inspired to implement the formula in a visual way. At the time, I was only capable of working with two dimensions, but I plan to use WebGL to rework this into a 3D simulation, probably utilizing Three.js.
+          mixin canvasAppLinks([["/canvas/gravity","Run"],["https://github.com/zachfogg/gamma-node/tree/master/static/js/canvas/gravity","Fork me on GitHub"]])
+
+      .prefix_6.grid_6
+        .canvasApp
+          mixin canvasAppTitle("Squares", "Natural Motion")
+          p This is where it all started: the very first canvas app I wrote. This code is kind of sentimental to me, because I discovered and understood function closures for the first time while writing it. For me, this is when writing JavaScript started to 'click'.
+          mixin canvasAppLinks([["/canvas/squares","Run"],["#","Fork me on GitHub"]])
+
+      .grid_6.suffix_6
+        .canvasApp
+          mixin canvasAppTitle("Grid", "Zoom and Perspective")
+          p Trying to emulate the effect of a camera's zoom functionality, this is the second canvas app I wrote. Although an unnsuccessful attempt at creating the desired zoom effect, I still find this to be a fascinating visual, and the math behind it is interesting as well.
+          mixin canvasAppLinks([["/canvas/grid","Run"],["#","Fork me on GitHub"]])
+

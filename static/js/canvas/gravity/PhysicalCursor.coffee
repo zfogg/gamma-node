@@ -13,7 +13,7 @@ window.PhysicalCursor = (G) ->
       ($ "body").mouseup   @mouseUpBody
       ($ "canvas").mousemove C$.cursorUpdater @trackedPosition, canvas
 
-      super G.vectors.get(), null, null, null, G.vectors.get()
+      super
 
     isClicked:
       left:   false
@@ -51,7 +51,7 @@ window.PhysicalCursor = (G) ->
     mouseUpCanvas: =>
       if @isClicked.left
         G.squares.forEach (s) =>
-          if 75 > G.distance s.position, @position
+          if 25 > G.distance s.position, @position
             f = G.forceTowards s.position, @position, G.CC_cursorForce.values.getFromControl()
             s.applyForce f
             G.vectors.put f
