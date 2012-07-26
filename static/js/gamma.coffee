@@ -13,7 +13,7 @@ $ ->
   bodyBGColor = ($ "body")[0].className.match /bg-color-\w+/
 
   replaceBGColor = (e, color) ->
-    Gamma.replaceClass e, /bg-color-.*/, color
+    Gamma.replaceClass e, /bg-color-\w+/, color
   headerH1Color = ($ "#header h1").css "color"
   ($ ".navItem").mouseover ->
     replaceBGColor ($ "body")[0], "bg-color-"+@.id.split('-')[1]
