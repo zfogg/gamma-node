@@ -1,0 +1,12 @@
+extends layout/index
+
+append css
+  :stylus
+    #content
+      text-align center
+
+block content
+  #content-wrapper
+    #content
+      .prefix_2.grid_8.suffix_2
+        !=content

@@ -49,14 +49,14 @@ html.no-js(lang='en')
               a(href=href)
                 li.navItem(id="navItem-"+color, class="bg-color-"+color)=text
 
-            mixin navItem("~/",        "/",                          "glass")
-            mixin navItem("Twitter",   "#",                          "pink")
-            mixin navItem("Work",      "/work",                      "tan")
-            mixin navItem("Facebook",  "#",                          "navy")
-            mixin navItem("Canvas",    "/canvas",                    "teal")
-            mixin navItem("Instagram", "#",                          "gold")
-            mixin navItem("About",     "/About",                     "grapefruit")
-            mixin navItem("GitHub",    "http://github.com/zachfogg", "mint")
+            mixin navItem("~/",        "/",                              "glass")
+            mixin navItem("Twitter",   "https://twitter.com/zfogg",      "pink")
+            mixin navItem("Work",      "/work",                          "tan")
+            mixin navItem("Facebook",  "https://facebook.com/zach.fogg", "navy")
+            mixin navItem("Canvas",    "/canvas",                        "teal")
+            mixin navItem("Instagram", "http://instajelly.com/zfogg",    "gold")
+            mixin navItem("About",     "/about",                         "grapefruit")
+            mixin navItem("GitHub",    "http://github.com/zachfogg",     "mint")
 
       #main(role='main')
         block content

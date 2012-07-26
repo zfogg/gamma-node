@@ -32,10 +32,6 @@ server.get "/", (req, res) ->
         title: ''
         content: markdown content
 
-server.get /^\/canvas\/?$/, (req, res) ->
-  res.render "canvas"
-    title: ''
-
 server.get /^\/canvas\/([\w-]+\/?)+$/, (req, res) ->
   name = req.params[0].split('/').reverse()[0]
   res.render "canvas/canvas",
