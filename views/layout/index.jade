@@ -45,6 +45,7 @@ html.no-js(lang='en')
 
         #nav-wrapper
           ul#nav.grid_7
+
             mixin navItem(text, href, color)
               a(href=href)
                 li.navItem(id="navItem-"+color, class="bg-color-"+color)=text
@@ -55,7 +56,7 @@ html.no-js(lang='en')
             mixin navItem("Facebook",  "https://facebook.com/zach.fogg", "navy")
             mixin navItem("Canvas",    "/canvas",                        "teal")
             mixin navItem("Instagram", "http://instajelly.com/zfogg",    "gold")
-            mixin navItem("About",     "/about",                         "grapefruit")
+            mixin navItem("Contact",   "/contact",                       "grapefruit")
             mixin navItem("GitHub",    "http://github.com/zachfogg",     "mint")
 
       #main(role='main')
