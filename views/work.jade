@@ -2,11 +2,98 @@ extends layout/index
 
 append css
   :stylus
-    #content
-      text-align center
+    #main
+      padding-top 15px
+      padding-bottom 15px
+
+      #content
+        text-align center
+
+        .work_project
+          height 1%
+          overflow hidden
+          margin-bottom 50px
+
+        a#awdb-logo_link
+          text-decoration none !important
+        #awdb-logo
+          margin-top 50px
+          background-color white
+          width 380px
+          height 380px
+          padding 10px
+
+
+          .awdb-logo_block
+            position relative
+            float left
+            width 170px
+            height 170px
+            margin 10px
+
+          .awdb-logo_text
+            position absolute
+            bottom 0
+            right 5px
+            color white
+            font-family Tahoma, Arial, sans-serif
+            font-size 180px
+            line-height 1em
+
+          #a, #d, #b
+            background-color #aeba00
+          #w
+            background-color #666666
 
 block content
   #content-wrapper
     #content
-      .prefix_2.grid_8.suffix_2
-        !=content
+
+      .work_project
+        .grid_6
+          .content-halfBlock
+            h3 University of Maryland
+            h4 Department of Agriculture
+            p Being a new student at UMD, I decided it would be a good idea to be professionally involved with one of the school's development teams. I was hired as a Web Developer a group working for UMD's Department of Agriculture group.
+            p We're tasked with updating several old, out-dated web apps, as well as developing several new ones. Drupal is the main choice of framework for this job.
+            p July 2012 - Present
+        .grid_6
+          .content-halfBlock
+            a(href="http://umd.edu/")
+              img.work_img(src="/images/work/UMD_Logo.png", width=300, height=284)
+
+      .work_project
+        .grid_6
+          .content-halfBlock
+            a#awdb-logo_link(href="http://anthonywilder.com/")
+              #awdb-logo.unselectable
+                mixin logo_block(letter)
+                  .awdb-logo_block(id=letter)
+                    .awdb-logo_text=letter
+                mixin logo_block("a")
+                mixin logo_block("w")
+                mixin logo_block("d")
+                mixin logo_block("b")
+
+        .grid_6
+          .content-halfBlock
+            h3 Anthony Wilder
+            h4 Design / Build
+            p This company, located in Cabin John, Maryland, hired me to take on the development and maintanence of their website once the current maintainer moved on.
+            p The front-end of the site was visually appealing, but the source code needed much work. All 100-or-so pages contained duplicate code; there was no concept of a 'layout', and there were no HTML templates. The layout was literally copy+paste'd on each and every page.
+            p I spent several weeks rewriting the entire site from scratch using Node.js as a simple HTTP router, Jade for markup templates, Stylus for styles, and CoffeeScript for functionality. Now, the amount of code duplication is near zero, and the site is many times easier to maintain and update.
+            p January 2012 - Present
+
+      .work_project
+        .grid_6
+          .content-halfBlock
+            h3 Totally Polished
+            h4 Nail and Skin Spa
+            p A local salon/spa was looking for a web developer to help them create a site for their store, and happened to mention that to my grandmother as she was enjoying the salon, who then passed that information to me.
+            p Working closely with the owner and her family, I created a design that was aesthetically pleasing to the client, and then turned my design into a simple website for them.
+            p At a single page, the site isn't very complex, but it serves its purpose in showcasing the talents and services of my client's spa, and it allows potential customers to locate the spa online. Even as a small local business will benefit from having a website in this increasingly digital world!
+            p February 2012
+        .grid_6
+          .content-halfBlock
+            a(href="http://totallypolishednailandskinspa.com/")
+              img.work_img(src="/images/work/TPNS_Screenshot.jpg", width=380, height=387)

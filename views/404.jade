@@ -1,4 +1,16 @@
-#container.container_12
-  header#header
-    h1  Not Found
-    h3 Sorry, the page you are looking for does not exist.
+extends layout/index
+
+append css
+  :stylus
+    #content
+      text-align center
+
+block title
+  - locals.title = "404"
+
+block content
+  #content-wrapper
+    #content
+      .prefix_2.grid_8.suffix_2
+        h2 404
+        h3 This page can't be found or doesn't exist.
