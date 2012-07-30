@@ -14,6 +14,9 @@ append css
           overflow hidden
           margin-bottom 50px
 
+        .work_graphic
+          margin-top 110px
+
         a#awdb-logo_link
           text-decoration none !important
         #awdb-logo
@@ -60,20 +63,21 @@ block content
         .grid_6
           .content-halfBlock
             a(href="http://umd.edu/")
-              img.work_img(src="/images/work/UMD_Logo.png", width=300, height=284)
+              img.work_graphic(src="/images/work/UMD_Logo.png", width=300, height=284)
 
       .work_project
         .grid_6
           .content-halfBlock
-            a#awdb-logo_link(href="http://anthonywilder.com/")
-              #awdb-logo.unselectable
-                mixin logo_block(letter)
-                  .awdb-logo_block(id=letter)
-                    .awdb-logo_text=letter
-                mixin logo_block("a")
-                mixin logo_block("w")
-                mixin logo_block("d")
-                mixin logo_block("b")
+            .work_graphic
+              a#awdb-logo_link(href="http://anthonywilder.com/")
+                #awdb-logo.unselectable
+                  mixin logo_block(letter)
+                    .awdb-logo_block(id=letter)
+                      .awdb-logo_text=letter
+                  mixin logo_block("a")
+                  mixin logo_block("w")
+                  mixin logo_block("d")
+                  mixin logo_block("b")
 
         .grid_6
           .content-halfBlock
@@ -96,4 +100,4 @@ block content
         .grid_6
           .content-halfBlock
             a(href="http://totallypolishednailandskinspa.com/")
-              img.work_img(src="/images/work/TPNS_Screenshot.jpg", width=380, height=387)
+              img#tpns-img.work_graphic(src="/images/work/TPNS_Screenshot.jpg", width=380, height=387)
