@@ -23,14 +23,12 @@ html.no-js(lang='en')
     != css('libs/960_12_col')
     block css
 
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
-    != js('libs/modernizr-2.0.6.min')
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+    script(src="/js/libs/modernizr-2.0.6.min.js")
     != js('gamma')
     block js
 
   body
-    script
-      window.jQuery || document.write('<script src="/js/libs/jquery-1.7.1.min.js"><\\/script>')
 
     #container.container_12
       #header.unselectable
