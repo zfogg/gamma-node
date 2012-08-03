@@ -1,16 +1,20 @@
-Crafty.c "b2_kinematicHMove",
+Crafty.c "b2_kinematicMove",
   _move: (x, y) ->
     p = @body.GetPosition()
     @body.SetPosition new b2Vec2 p.x+x, p.y+y
-  b2_kinematicHMove: (r, l, move$) ->
+  b2_kinematicMove: (u, r, d, l, f) ->
     @bind "EnterFrame", (e) ->
+      if @[u]
+        @_move 0, -f
       if @[r]
-        @_move 0.1, 0
+        @_move f, 0
+      if @[d]
+        @_move 0, f
       if @[l]
-        @_move -0.1, 0
+        @_move -f, 0
 
 Crafty.c "SpriteHFlip",
-  SpriteHFlip: (l, r) ->
+  spriteHFlip: (l, r) ->
     @bind "KeyDown", (e) ->
       if e.key == Crafty.keys[r]
         @flip()
@@ -18,7 +22,7 @@ Crafty.c "SpriteHFlip",
         @unflip()
 
 Crafty.c "Keys",
-  Keys: (keys) ->
+  keys: (keys) ->
     @bind "KeyDown", (e) ->
       for k,v of keys
         if e.key == Crafty.keys[k]

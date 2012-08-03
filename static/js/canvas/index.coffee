@@ -18,7 +18,7 @@ class MegaMan extends Game
       rectangleFromE e, @canvas
 
     Crafty.sprite 40, "/images/canvas/MegaManSprites.png",
-      standing: [0, 1]
+      megamanStand: [0, 1]
 
     hero = Hero 550, 280
 
@@ -27,29 +27,26 @@ class MegaMan extends Game
       if e.click == Crafty.mouseButtons['LEFT']
         Crafty.e("2D, Canvas, Box2D, SpriteAnimation")
 
-
   update: (gameTime) ->
     super gameTime
 
   draw: (ctx) ->
     super ctx
 
+window.staticBodies = []
 rectangleFromE = (e, canvas) ->
   p = $(canvas).offset()
   x = e.offsetLeft - p.left
   y = e.offsetTop  - p.top
-  Crafty.e("Box2D")
+  staticBodies.push Crafty.e("Box2D")
     .attr(x: x, y: y, w: ($ e).width(), h: ($ e).height())
     .box2d(bodyType: "static")
-
-init = ->
-  game = new MegaMan
 
 konamiCode = "up up down down left right left right a b a enter"
 Mousetrap.bind konamiCode, ->
   Mousetrap.unbind konamiCode
-  init()
+  new MegaMan
 
 Mousetrap.bind "1", ->
   Mousetrap.unbind "1"
-  init()
+  new MegaMan
