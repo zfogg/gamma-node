@@ -1,54 +1,89 @@
-###
-Demonstrates pixel perfect collision detection utilizing image masks.
-gamejs.mask.fromSurface is used to create two pixel masks
-that do the actual collision detection.
-###
+$gjs   = require "gamejs"
+$mask  = require "gamejs/mask"
+$draw  = require "gamejs/draw"
+$v     = require "gamejs/utils/vectors"
+$m     = require "gamejs/utils/matrix"
 
-gamejs = require("gamejs")
-mask   = require("gamejs/mask")
-$v     = require("gamejs/utils/vectors")
+SpriteSheet = (require "js/canvas/SpriteSheet").SpriteSheet
+Animation   = (require "js/canvas/Animation").Animation
 
-gamejs.preload ["/images/spear.png", "/images/unit.png"]
+$gjs.preload [
+  "/images/spear.png",
+  "/images/unit.png",
+  "/images/canvas/MegaManSprites.png"
+]
 
-main = ->
-  # create image masks from surface
-  display       = gamejs.display.setMode [($ "#main").width(), ($ "#main").height()]
-  spear         = gamejs.image.load "/images/spear.png"
-  unit          = gamejs.image.load "/images/unit.png"
-  mUnit         = mask.fromSurface unit
-  mSpear        = mask.fromSurface spear
-  unitPosition  = [20, 350]
-  spearPosition = [6, 300]
-  font          = new gamejs.font.Font "20px monospace"
+$gjs.setLogLevel 0
 
-  tick = ->
-    # event handling
-    gamejs.event.get().forEach (event) ->
-      direction = {}
-      direction[gamejs.event.K_UP]    = [0,  -1]
-      direction[gamejs.event.K_DOWN]  = [0,   1]
-      direction[gamejs.event.K_LEFT]  = [-1,  0]
-      direction[gamejs.event.K_RIGHT] = [1,   0]
+$gjs.Surface::rotate = (r) ->
+    s        = @getSize()
+    @_matrix = $m.translate @_matrix, s[0]/2, s[1]/2
+    @_matrix = $m.rotate @_matrix, r
+    @_matrix = $m.translate @_matrix, -s[0]/2, -s[1]/2
 
-      if event.type is gamejs.event.KEY_DOWN
-        if direction[event.key]
-          spearPosition = $v.add spearPosition, $v.multiply direction[event.key], 10
-      else if event.type is gamejs.event.MOUSE_MOTION
-        if display.rect.collidePoint event.pos
-          spearPosition = $v.subtract event.pos, $v.divide spear.getSize(), 2
+window.rectangleFromE = (e, canvas) ->
+    new $gjs.Rect [e.offsetLeft, e.offsetTop], [($ e).width(), ($ e).height()]
 
-    # draw
-    display.clear()
-    display.blit unit, unitPosition
-    display.blit spear, spearPosition
+$gjs.ready main = ->
+    canvas        = $("#gjs-canvas")[0]
+    display       = $gjs.display.setMode [($ "#main").width(), ($ "#main").height()]
+    spear         = $gjs.image.load "/images/spear.png"
+    unit          = $gjs.image.load "/images/unit.png"
+    mUnit         = $mask.fromSurface unit
+    mSpear        = $mask.fromSurface spear
+    unitPosition  = [200, 350]
+    spearPosition = [300, 300]
+    font          = new $gjs.font.Font "20px monospace"
 
-    # collision
-    # the relative offset is automatically calculated by
-    # the higher-level gamejs.sprite.collideMask(spriteA, spriteB)
-    relativeOffset = $v.subtract spearPosition, unitPosition
-    if mUnit.overlap(mSpear, relativeOffset)
-      display.blit font.render("COLLISION", "#ff0000"), [200, 250]
+    collidables = for c in $ ".b2_staticBody"
+        rectangleFromE c, canvas
 
-  gamejs.time.fpsCallback tick, this, 30
+    ss = new SpriteSheet "/images/canvas/MegaManSprites.png",
+      width: 40, height: 40
 
-gamejs.ready main
+    anim = new Animation ss,
+        #spawning: [0, 0, 5]
+        spawn:    [0, 4]
+        #run:      [0, 2, 4]
+        #fidget:   [0, 1, 3]
+        #runGun:   [6, 2, 11]
+        #fall:     [9, 4, 10]
+        #climb:    [0, 3, 3]
+
+    window.x = anim
+    x.start "spawn"
+
+    tick = (gameTime) ->
+        $gjs.event.get().forEach (event) ->
+            direction = {}
+            direction[$gjs.event.K_UP]    = [0,  -1]
+            direction[$gjs.event.K_DOWN]  = [0,   1]
+            direction[$gjs.event.K_LEFT]  = [-1,  0]
+            direction[$gjs.event.K_RIGHT] = [1,   0]
+
+            if event.type is $gjs.event.KEY_DOWN
+                d = direction[event.key]
+                if d and d[0]
+                    spear.rotate d[0]*Math.PI/8
+
+            else if event.type is $gjs.event.MOUSE_MOTION
+                spearPosition = $v.subtract event.pos, $v.divide spear.getSize(), 2
+
+        x.update gameTime
+        do draw = ->
+            display.clear()
+            display.blit x.image
+            display.blit unit, unitPosition
+            display.blit spear, spearPosition
+
+            relativeOffset = $v.subtract spearPosition, unitPosition
+            if mUnit.overlap mSpear, relativeOffset
+                display.blit font.render("COLLISION", "#ff0000"), [200, 250]
+
+        do collide = ->
+            for c in collidables
+                if c.collidePoint $v.add spearPosition, $v.divide spear.getSize(), 2
+                    display.blit font.render("COLLISION", "#ff0000"), [200, 250]
+                    $draw.rect display, "#ff00cc", c
+
+    $gjs.time.fpsCallback tick, this, 30
