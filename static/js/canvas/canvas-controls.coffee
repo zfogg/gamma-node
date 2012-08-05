@@ -1,7 +1,9 @@
-# Slider elements on Firefox:
-#= require ../libs/html5slider
+C$ = require "./canvas-tools"
 
-window.CanvasControls = class
+# Slider elements on Firefox:
+require "../libs/html5slider"
+
+exports.CanvasControls = class
   constructor: ->
     @controls = ($ "#canvas-controls")
 
