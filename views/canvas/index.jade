@@ -3,7 +3,7 @@ extends ../layout/index
 
 append css
   :stylus
-    #cr-stage
+    #gjs-canvas
       position absolute !important
 
     .row
@@ -12,14 +12,18 @@ append css
 
 
 append js
-  != js("canvas/index")
+  != js("libs/yabble.js")
+  :coffeescript
+    require.run "canvas/index"
 
 
 block content
   #content-wrapper
     #content
 
-      #cr-stage
+      #gjs-loader
+        Loading...
+      canvas#gjs-canvas
 
       mixin canvasAppTitle(title, subtitle)
         h3.b2_staticBody=title
