@@ -42,16 +42,16 @@ $gjs.ready main = ->
       width: 40, height: 40
 
     anim = new Animation ss,
-        #spawning: [0, 0, 5]
-        spawn:    [0, 4]
-        #run:      [0, 2, 4]
-        #fidget:   [0, 1, 3]
-        #runGun:   [6, 2, 11]
-        #fall:     [9, 4, 10]
-        #climb:    [0, 3, 3]
+        spawning: [0, 0, 5]
+        spawn:    [0, 0, 7]
+        run:      [0, 2, 4]
+        fidget:   [0, 1, 3]
+        runGun:   [6, 2, 11]
+        fall:     [9, 4, 10]
+        climb:    [0, 3, 3]
 
     window.x = anim
-    x.start "spawn"
+    x.start "run"
 
     tick = (gameTime) ->
         $gjs.event.get().forEach (event) ->

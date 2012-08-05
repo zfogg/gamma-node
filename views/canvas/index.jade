@@ -17,9 +17,8 @@ append css
 
 append js
   != js("/js/libs/yabble.js")
-  script(src="/js/libs/gamejs.min.js")
+  != js("/js/libs/gamejs.min.js")
   :coffeescript
-    require.setModuleRoot = "/js/libs"
     require.run "js/canvas/index"
 
 

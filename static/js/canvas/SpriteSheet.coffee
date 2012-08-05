@@ -7,19 +7,20 @@ exports.SpriteSheet = class
         image = $gjs.image.load imagePath
         imgSize = new $gjs.Rect([0, 0], [width, height])
 
-        i = 0
-        while i < image.rect.width
-            j = 0
-            while j < image.rect.height
+        j = 0
+        while j < image.rect.height
+            i = 0
+            row = []
+            while i < image.rect.width
                 surface = new $gjs.Surface([width, height])
                 rect = new $gjs.Rect(i, j, width, height)
                 surface.blit image, imgSize, rect
-                @surfaceCache.push surface
-                j += height
+                row.push surface
                 i += width
+            @surfaceCache.push row
+            j += height
 
     surfaceCache: []
 
-    get: (id) ->
-        @surfaceCache[id]
-
+    get: (x, y) ->
+        @surfaceCache[x][y]
