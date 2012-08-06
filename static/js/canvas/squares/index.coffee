@@ -1,24 +1,20 @@
-#= require ../canvas-tools
+C$ = require "../canvas-tools"
 
 Squares = (canvas) ->
-
-  G = # Globals object; need to refactor this out.
-    currentMotionFunction: undefined
-    squareRows: 0
-    squareColumns: 0
-    squares: []
-    gameTime: 0
-    canvas_center:
-      x: canvas.width / 2
-      y: canvas.height / 2
-
+  currentMotionFunction = undefined
+  squares = []
+  gameTime = 0
+  ctx = canvas.getContext("2d")
+  canvas_center =
+    x: canvas.width / 2
+    y: canvas.height / 2
 
   class Square
     constructor: (@x, @y, @size, @index, @color) ->
       @alpha = 1
 
     update: ->
-      G.currentMotionFunction this
+      currentMotionFunction this
 
     draw: ->
       ctx.fillStyle = @color
@@ -26,85 +22,74 @@ Squares = (canvas) ->
 
   main = ->
     C$.clearCanvas canvas, ctx
-    for square in G.squares
+    for square in squares
       square.update()
       square.draw()
 
-    G.gameTime++
+    gameTime++
     window.requestFrame main, canvas
 
   constructSquares = (rows, columns, size) ->
-    squares = new Array()
     color = colorPatternGenerator()
-    positions = initPositions(rows, columns)
-    positions.forEach (p, i) ->
-      squares[i] = new Square(p.x, p.y, size, i, color(i))
-
-    squares
+    positions = initPositions rows, columns
+    for p,i in positions
+      new Square p.x, p.y, size, i, color(i)
 
   initPositions = (rows, columns) ->
     positions = []
-    i = 0
-
-    x = 0
-    while x < canvas.width
-      y = 0
-      while y < canvas.height
-        positions[i++] = x: x, y: y
-        y += canvas.height / rows
-      x += canvas.width / columns
-
+    for x in [0..canvas.width] by canvas.width / columns
+      for y in [0..canvas.height] by canvas.width / rows
+        positions.push x: x, y: y
     positions
 
   motionOverTime = (motionExpression) ->
     (point) ->
-      point.x += Math.sin(G.gameTime / motionExpression(point))
-      point.y += Math.cos(G.gameTime / motionExpression(point))
+      point.x += Math.sin(gameTime / (motionExpression point))
+      point.y += Math.cos(gameTime / (motionExpression point))
+
+  distance = (p1, p2) ->
+    C$.Math.hypotenuse p1.x-p2.x, p1.y-p2.y
 
   randomExpressionClosure = ->
     expressions = motionExpressionGenerator()
-    n = Math.floor(C$.Math.randomBetween(0, expressions.length))
-    expressions[n]
+    expressions[Math.floor C$.Math.randomBetween 0, expressions.length]
 
   motionExpressionGenerator = ->
     expressions = []
 
     expressions[expressions.length] = ripple1 = ->
-      G.gameTime = C$.Math.randomBetween(25000, 75000)
-      xDenominator = C$.Math.randomBetween(5, 15)
-      yDenominator = C$.Math.randomBetween(5, 15)
+      gameTime = C$.Math.randomBetween 25000, 75000
+      xDenominator = C$.Math.randomBetween 5, 15
+      yDenominator = C$.Math.randomBetween 5, 15
       (square) ->
         point =
-          x: square.x * Math.sin(G.gameTime / xDenominator)
-          y: square.y * Math.cos(G.gameTime / yDenominator)
-
-        C$.Math.distance point, G.canvas_center
+          x: square.x * Math.sin(gameTime / xDenominator)
+          y: square.y * Math.cos(gameTime / yDenominator)
+        distance point, canvas_center
 
     expressions[expressions.length] = ripple2 = ->
-      G.gameTime = C$.Math.randomBetween(10, 1000)
+      gameTime = C$.Math.randomBetween(10, 1000)
       denominator = C$.Math.randomBetween(1000, 4000)
       (square) ->
         point =
-          x: square.x * Math.sin(G.gameTime / denominator)
-          y: square.y * Math.cos(G.gameTime / denominator)
-
-        C$.Math.distance(point, G.canvas_center) / 100
+          x: square.x * Math.sin(gameTime / denominator)
+          y: square.y * Math.cos(gameTime / denominator)
+        distance(point, canvas_center) / 100
 
     expressions[expressions.length] = brownian = ->
-      G.gameTime = Math.random() * 10000000
+      gameTime = Math.random() * 10000000
       (square) ->
         point =
-          x: square.x * Math.sin(G.gameTime / 50)
-          y: square.y * Math.cos(G.gameTime / 50)
-
-        C$.Math.distance point, G.canvas_center
+          x: square.x * Math.sin(gameTime / 50)
+          y: square.y * Math.cos(gameTime / 50)
+        distance point, canvas_center
 
     expressions[expressions.length] = helix = ->
-      G.gameTime = C$.Math.randomBetween(10000, 100000)
+      gameTime = C$.Math.randomBetween(10000, 100000)
       f = trigFunction Math.random()
       indexFromCorner = (i) -> i*i
       (square) ->
-        2 * (f G.squares.length) * Math.log(indexFromCorner square.index) * G.squares.length * 0.00005
+        2 * (f squares.length) * Math.log(indexFromCorner square.index) * squares.length * 0.00005
 
     expressions
 
@@ -148,18 +133,14 @@ Squares = (canvas) ->
 
   resetSquares = ->
     expression = randomExpressionClosure()()
-    G.currentMotionFunction = motionOverTime expression
-    x = determineRatio(canvas.width)
-    y = determineRatio(canvas.height)
+    currentMotionFunction = motionOverTime expression
+    x = determineRatio canvas.width
+    y = determineRatio canvas.height
     coEf = Math.floor(C$.Math.randomBetween (x - 1) * 8, y * 8)
-    G.squareRows = x * coEf
-    G.squareColumns = y * coEf
-    G.squares = constructSquares G.squareRows, G.squareColumns, (C$.Math.randomBetween 5, 25)
+    squares = constructSquares (x * coEf), (y * coEf), (C$.Math.randomBetween 5, 25)
 
   determineRatio = (n) ->
     n / Math.floor(canvas.width / canvas.height * 10) / 10
-
-  ctx = canvas.getContext("2d")
 
   canvas.onclick = resetSquares
   setInterval resetSquares, 15000
@@ -170,4 +151,4 @@ $ ->
   canvas = document.getElementById("canvas")
   canvas.height = 480
   canvas.width = 940
-  Squares canvas  if canvas.getContext
+  Squares canvas if canvas.getContext

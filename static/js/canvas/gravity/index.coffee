@@ -1,4 +1,4 @@
-#= require gravity
+Gravity = (require "./gravity").Gravity
 
 $ ->
   canvas        = ($ "#canvas")[0]
