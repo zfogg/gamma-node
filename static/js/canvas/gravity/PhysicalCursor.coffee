@@ -1,5 +1,5 @@
-Gamma.namespace "Gravity.PhysicalCursor", (exports$, top) ->
-    G = top.Gravity
+Gamma.namespace "Gravity", (exports$, top) ->
+    G = exports$
 
     C$           = require "../canvas-tools"
     PhysicalBody = (require "./PhysicalBody").class

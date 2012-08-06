@@ -1,5 +1,5 @@
-Gamma.namespace "Gravity.PhysicalBody", (exports$, top) ->
-    G = top.Gravity
+Gamma.namespace "Gravity", (exports$, top) ->
+    G = exports$
 
     exports.class = class
         constructor: (@position    = G.vectors.get(),  \

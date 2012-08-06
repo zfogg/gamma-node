@@ -1,5 +1,5 @@
-Gamma.namespace "Gravity.PhysicalSquare", (exports$, top) ->
-    G = top.Gravity
+Gamma.namespace "Gravity", (exports$, top) ->
+    G = exports$
 
     PhysicalBody = (require "./PhysicalBody").class
 
