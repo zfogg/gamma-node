@@ -1,18 +1,20 @@
-Gamma.namespace "Gravity", (exports$, top) ->
+Gamma.namespace "Gravity", (G, top) ->
     require "../../libs/mousetrap.min"
 
-    C$             = require "../canvas-tools"
+    G.C$ = C$      = require "../canvas-tools"
     CanvasControls = (require "../canvas-controls").CanvasControls
 
     PhysicalSquare = (require "./PhysicalSquare").class
     PhysicalCursor = (require "./PhysicalCursor").class
 
+    require "./QuadTree"
+
     exports.Gravity = (canvas) ->
-        exports$.canvas   = canvas
-        exports$.ctx      = ctx     = canvas.getContext "2d"
-        exports$.squares  = squares = []
-        exports$.vectors  = vectors = new C$.Vector2Pool 1000
-        exports$.gameTime = 0
+        G.canvas   = canvas
+        G.ctx      = ctx     = canvas.getContext "2d"
+        G.squares  = squares = []
+        G.vectors  = vectors = new C$.Vector2Pool 1000
+        G.gameTime = 0
 
         defaultGravity        = (C$.Math.randomBetween 4, 9) * Math.pow 10, -4
         defaultFriction       = (C$.Math.randomBetween 2, 6) * Math.pow 10, -4
@@ -21,16 +23,16 @@ Gamma.namespace "Gravity", (exports$, top) ->
         defaultCursorMass     = 1750
         defaultCursorForce    = 0.65
 
-        exports$.direction = direction = (p1, p2) ->
+        G.direction = direction = (p1, p2) ->
             vectors.get p1[0] - p2[0], p1[1] - p2[1]
 
-        exports$.distance = distance = (p1, p2) ->
+        G.distance = distance = (p1, p2) ->
             d = direction p1, p2
             r = hypotenuse d[0], d[1]
             vectors.put d
             r
 
-        exports$.applyGravity = applyGravity = do ->
+        G.applyGravity = applyGravity = do ->
             attractionOfGravity = (b1, b2) ->
                 d = direction b1.position, b2.position
                 r = hypotenuse d[0], d[1]
@@ -51,7 +53,7 @@ Gamma.namespace "Gravity", (exports$, top) ->
                 body2.applyForce f
                 vectors.put f
 
-        exports$.forceTowards = forceTowards = (from, to, coEf = 1) ->
+        G.forceTowards = forceTowards = (from, to, coEf = 1) ->
             d = direction from, to
             normalize d
             v = vectors.get -d[0]*coEf, -d[1]*coEf
@@ -112,12 +114,12 @@ Gamma.namespace "Gravity", (exports$, top) ->
             control.values = cValObj
             control
 
-        exports$.CC_gravity        = CC_gravity        = rangeInput "Gravitational Attraction",    defaultGravity
-        exports$.CC_friction       = CC_friction       = rangeInput "Atmospheric Friction",        defaultFriction
-        exports$.CC_distance       = CC_distance       = rangeInput "Gravity Deadzone Radius",     defaultDistance
-        exports$.CC_cursorFriction = CC_cursorFriction = rangeInput "Cursor Friction Coefficient", defaultCursorFriction
-        exports$.CC_cursorMass     = CC_cursorMass     = rangeInput "Cursor Body Mass",            defaultCursorMass
-        exports$.CC_cursorForce    = CC_cursorForce    = rangeInput "Cursor Release Force",        defaultCursorForce
+        G.CC_gravity        = CC_gravity        = rangeInput "Gravitational Attraction",    defaultGravity
+        G.CC_friction       = CC_friction       = rangeInput "Atmospheric Friction",        defaultFriction
+        G.CC_distance       = CC_distance       = rangeInput "Gravity Deadzone Radius",     defaultDistance
+        G.CC_cursorFriction = CC_cursorFriction = rangeInput "Cursor Friction Coefficient", defaultCursorFriction
+        G.CC_cursorMass     = CC_cursorMass     = rangeInput "Cursor Body Mass",            defaultCursorMass
+        G.CC_cursorForce    = CC_cursorForce    = rangeInput "Cursor Release Force",        defaultCursorForce
 
         CC_defaultButton = controls.ButtonInput "Default Values"
         ($ CC_defaultButton).click ->
@@ -128,7 +130,7 @@ Gamma.namespace "Gravity", (exports$, top) ->
 
         CC_resetButton = controls.ButtonInput("Reset Squares")
         ($ CC_resetButton).click (e) ->
-            exports$.squares = squares = resetSquares squares, CC_particleCount.value
+            G.squares = squares = resetSquares squares, CC_particleCount.value
 
         # Keyboard Events
         Mousetrap.bind 'space', ->
@@ -144,15 +146,15 @@ Gamma.namespace "Gravity", (exports$, top) ->
         hypotenuse = C$.Math.hypotenuseLookup 3, 0,
             ((Math.pow canvas.width, 2) + (Math.pow canvas.height, 2)) / Math.pow 10, 5
             Float64Array
-        exports$.cursor  = cursor  = new PhysicalCursor
-        exports$.squares = squares = resetSquares [], 16
+        G.cursor  = cursor  = new PhysicalCursor
+        G.squares = squares = resetSquares [], 16
 
         do main = ->
             C$.clearCanvas canvas, ctx
             cursor.update()
 
             mapPairs applyGravity, squares
-            square.update exports$.gameTime for square in squares
+            square.update G.gameTime for square in squares
 
-            exports$.gameTime++
+            G.gameTime++
             requestFrame main, canvas

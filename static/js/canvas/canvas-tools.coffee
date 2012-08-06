@@ -5,6 +5,8 @@ exports.Fn = Fn =
     id: (x) -> x
     array: -> arguments
 
+    apply: (f, args...) -> f.apply args
+
     #fold :: (a -> b -> b) -> [a] -> a -> b
     fold: (f, xs, acc) ->
         if xs.length > 0
