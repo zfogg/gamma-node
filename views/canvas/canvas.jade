@@ -1,10 +1,12 @@
 extends ../layout/index
 
 append js
-  != js('canvas/'+canvasScript+'/index')
+  != js("libs/yabble")
+  :coffeescript
+    require.run '/js/canvas/#{canvasScript}/index'
 
 append css
-  != css('canvas')
+  != css("canvas")
   :stylus
     #main
       padding-bottom 10px
