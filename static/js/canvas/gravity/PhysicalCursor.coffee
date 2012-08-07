@@ -18,6 +18,8 @@ Gamma.namespace "Gravity", (exports$, top) ->
             ($ "body").mouseup   @mouseUpBody
             ($ "canvas").mousemove C$.cursorUpdater @trackedPosition, canvas
 
+            ($ canvas).css "cursor", "none"
+
             super
 
         isClicked:
@@ -74,10 +76,10 @@ Gamma.namespace "Gravity", (exports$, top) ->
         update: ->
             if @isClicked.right
                 @rightHeldDown()
-                @draw(G.ctx)
             else @updatePosition()
 
         draw: (ctx) ->
+            ctx.strokeStyle = "#000000"
             ctx.beginPath()
             ctx.arc @position[0], @position[1], 10, 0, Math.PI*2, true
             ctx.closePath()

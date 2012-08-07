@@ -5,7 +5,15 @@ exports.Fn = Fn =
     id: (x) -> x
     array: -> arguments
 
-    apply: (f, args...) -> f.apply args
+    apply: (f, args...) -> f.apply @, args
+
+    map: (f, xs) ->
+        f x for x in xs
+
+    concat: (xss) ->
+        r = []
+        r = r.concat xs for xs in xss
+        r
 
     #fold :: (a -> b -> b) -> [a] -> a -> b
     fold: (f, xs, acc) ->
@@ -141,6 +149,11 @@ Array::takeWhile = (p) ->
 Array::dropWhile = (p) ->
     @[(@iWhile p)..]
 
+Array::take = (n) ->
+    @[0...n]
+Array::drop = (n) ->
+    @[n..]
+
 Array::toSet = ->
     s = {}
     s[x] = i for x,i in @
@@ -148,6 +161,18 @@ Array::toSet = ->
 
 Array::random = ->
     @[Math.random() * @length | 0]
+
+Array::extract = (keys) ->
+    @map (x) ->
+        for k in keys.split '.'
+            x = x[k]
+        x
+Array::extractf = (f, args...) ->
+    @map (x) -> x[f] args
+
+Array::clean = ->
+    @filter (x) ->
+        not ($.isArray x) or x.length > 0
 
 # For lack of a better place, the following functions are here.
 exports.clearCanvas = (canvas, ctx) ->

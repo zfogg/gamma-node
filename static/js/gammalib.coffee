@@ -10,6 +10,11 @@ Gamma =
             vals
         toString: (xs) ->
             "rgba(#{xs.join ','})"
+        fromHex: (hex, opacity=1) ->
+            rgb = (hex.replace '#', '').match /(.{2})/g
+            for i in [0...3]
+                rgb[i] = parseInt rgb[i], 16
+            return "rgba(#{rgb.join ', '}, #{opacity})";
 
     namespace: (target, name, block) ->
         [target, name, block] = [(if typeof exports isnt 'undefined' then exports else window), arguments...] if arguments.length < 3

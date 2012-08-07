@@ -2,6 +2,7 @@ Gamma.namespace "Gravity", (G, top) ->
     require "../../libs/mousetrap.min"
 
     G.C$ = C$      = require "../canvas-tools"
+    Fn             = C$.Fn
     CanvasControls = (require "../canvas-controls").CanvasControls
 
     PhysicalSquare = (require "./PhysicalSquare").class
@@ -97,7 +98,12 @@ Gamma.namespace "Gravity", (G, top) ->
             then -> (x*C$.Math.PHI for x in [4.25..6.75] by 0.125).random()
             else [4..7].random()
             s.destructor() for s in xs
+
             constructSquares gridSize, gridSize, size
+
+        resetQT = (recur_lim=10) ->
+            s = canvas.width/2
+            new Gravity.QuadTree (new Gravity.AABB [s, s], s), squares, recur_lim
 
       # Canvas Controls
         controls          = new CanvasControls
@@ -141,7 +147,13 @@ Gamma.namespace "Gravity", (G, top) ->
                     [(r 4, 8), (r 1, 4)].random(),
                     [(r 4, 8), (r 1, 4)].random()
 
+        Mousetrap.bind 'f8', ->
+            window.toggleNav()
+
         # Init.
+
+        bodyFromQt = (qt) ->
+            ss = qt.queryRange
 
         hypotenuse = C$.Math.hypotenuseLookup 3, 0,
             ((Math.pow canvas.width, 2) + (Math.pow canvas.height, 2)) / Math.pow 10, 5
@@ -149,12 +161,20 @@ Gamma.namespace "Gravity", (G, top) ->
         G.cursor  = cursor  = new PhysicalCursor
         G.squares = squares = resetSquares [], 16
 
+        canvasBox = new Gravity.AABB [480, 240], 480
         do main = ->
             C$.clearCanvas canvas, ctx
-            cursor.update()
 
+            #Update
+            cursor.update()
             mapPairs applyGravity, squares
             square.update G.gameTime for square in squares
+
+            #Render
+            qt$.draw G.ctx for qt$ in resetQT(10).map Fn.id
+            cursor.draw G.ctx
+            s.draw ctx for s in squares
+
 
             G.gameTime++
             requestFrame main, canvas

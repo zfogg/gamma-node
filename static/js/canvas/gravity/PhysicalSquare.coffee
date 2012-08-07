@@ -5,7 +5,7 @@ Gamma.namespace "Gravity", (exports$, top) ->
 
     exports.class = class extends PhysicalBody
         constructor: (@position, @mass, @size, @index, @color) ->
-          super @position, @mass, @size, 0.85
+          super @position, @mass, 1.2*@size, 0.95
 
         update: ->
           G.applyGravity @, G.cursor
@@ -13,7 +13,6 @@ Gamma.namespace "Gravity", (exports$, top) ->
             @bounceOffLimits G.canvas.width, G.canvas.height, @mass*2
           @updatePosition()
           @decayVelocity G.CC_friction.values.current
-          @draw G.ctx
 
         decayVelocity: (n) ->
           @velocity[0] -= @velocity[0] * n * @mass
@@ -36,3 +35,5 @@ Gamma.namespace "Gravity", (exports$, top) ->
               @velocity[1] = -bounce @velocity[1]
             else if @position[1] < 0 + offset
               @velocity[1] = bounce @velocity[1]
+
+        log: -> console.log arguments
