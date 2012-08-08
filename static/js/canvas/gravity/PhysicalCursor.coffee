@@ -79,7 +79,7 @@ Gamma.namespace "Gravity", (exports$, top) ->
             else @updatePosition()
 
         draw: (ctx) ->
-            ctx.strokeStyle = "#000000"
+            ctx.fillStyle = "#000000"
             ctx.beginPath()
             ctx.arc @position[0], @position[1], 10, 0, Math.PI*2, true
             ctx.closePath()

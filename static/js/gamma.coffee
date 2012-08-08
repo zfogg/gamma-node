@@ -22,9 +22,10 @@ $ ->
     replaceBGColor ($ "body")[0], bodyBGColor
     ($ "#header h1").css "color", headerH1Color
 
-  window.toggleNav = ->
+  Gamma.toggleNav = ->
     ($ "#header").slideToggle "slow"
-    if (($ "#container").css "padding-top") != "0px"
-      ($ "#container").css "padding-top", "0px"
+    ($ "#footer").slideToggle "slow"
+    if (($ "#container").css "padding-top") == "0px"
+      ($ "#container").css("padding-top",    "15px")
     else
-      ($ "#container").css "padding-top", "25px"
+      ($ "#container").css("padding-top",    "0px")

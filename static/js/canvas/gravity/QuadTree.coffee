@@ -56,7 +56,7 @@ Gamma.namespace "Gravity", (G, top) ->
         _new_QuadTree: (corner) ->
             new G.QuadTree corner, null, @RECUR_LIMIT-1
 
-        QT_NODE_CAPACITY: 4
+        QT_NODE_CAPACITY: 1
         color: "#000000"
 
         #:: V2 -> bool
@@ -105,7 +105,9 @@ Gamma.namespace "Gravity", (G, top) ->
             _acc
 
         draw: (ctx) ->
-            opacity = 0.25+(@getQuadrents().length/@QT_NODE_CAPACITY)
+            len = @getQuadrents().length
+            delta = len/@QT_NODE_CAPACITY
+            opacity = easeInOutCirc len, 0.15, delta, @QT_NODE_CAPACITY
             if @RECUR_LIMIT % 2 == 0
                 @getQuadrents().map (x) =>
                     x.color = Gamma.RGBA.fromHex @color, opacity
@@ -117,3 +119,11 @@ Gamma.namespace "Gravity", (G, top) ->
                 @boundary.center[1]-@boundary.half,
                 @boundary.half*2,
                 @boundary.half*2)
+
+
+    easeInOutCirc = (t, b, c, d) ->
+            t /= d/2
+            if t < 1
+                return -c/2 * (Math.sqrt(1 - t*t) - 1) + b
+            t -= 2
+            return c/2 * (Math.sqrt(1 - t*t) + 1) + b

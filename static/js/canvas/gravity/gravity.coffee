@@ -142,13 +142,11 @@ Gamma.namespace "Gravity", (G, top) ->
         Mousetrap.bind 'space', ->
             for s in squares
                 r = (p, k) ->
-                    [-1, 1].random() * C$.Math.randomBetween p, k
-                s.applyForce vectors.get \
-                    [(r 4, 8), (r 1, 4)].random(),
-                    [(r 4, 8), (r 1, 4)].random()
+                    [-1, 1].random() * C$.Math.randomBetween p*s.size, k*s.size
+                s.applyForce vectors.get (r 0.2, 0.6), (r 0.2, 0.6)
 
-        Mousetrap.bind 'f8', ->
-            window.toggleNav()
+        Mousetrap.bind 'f10', ->
+            Gamma.toggleNav()
 
         # Init.
 
@@ -171,7 +169,7 @@ Gamma.namespace "Gravity", (G, top) ->
             square.update G.gameTime for square in squares
 
             #Render
-            qt$.draw G.ctx for qt$ in resetQT(10).map Fn.id
+            qt$.draw G.ctx for qt$ in resetQT().map Fn.id
             cursor.draw G.ctx
             s.draw ctx for s in squares
 
