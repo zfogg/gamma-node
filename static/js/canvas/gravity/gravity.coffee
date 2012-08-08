@@ -103,7 +103,7 @@ Gamma.namespace "Gravity", (G, top) ->
 
         resetQT = (recur_lim=10) ->
             s = canvas.width/2
-            new Gravity.QuadTree (new Gravity.AABB [s, s], s), squares, recur_lim
+            new Gravity.SquareTree (new Gravity.AABB [s, s], s), squares, recur_lim
 
       # Canvas Controls
         controls          = new CanvasControls

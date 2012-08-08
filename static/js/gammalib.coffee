@@ -10,6 +10,9 @@ Gamma =
             vals
         toString: (xs) ->
             "rgba(#{xs.join ','})"
+        fromRGB: (rgb, opacity=1) ->
+            vals = s.match /\.?\d+\.?\d*/g
+            "rgba(#{vals[0]},#{vals[1]},#{vals[2]},#{opacity})"
         fromHex: (hex, opacity=1) ->
             rgb = (hex.replace '#', '').match /(.{2})/g
             for i in [0...3]

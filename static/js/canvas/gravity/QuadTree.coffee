@@ -31,12 +31,11 @@ Gamma.namespace "Gravity", (G, top) ->
                 new G.AABB [@_se[0] - q, @_se[1] - q], q
             ]
 
-
     G.QuadTree = exports.class = class
         #:: AABB -> @
         constructor: (@boundary, point_pointers, @RECUR_LIMIT) ->
             @pointps = []
-            if ($.isArray point_pointers) and point_pointers.length > 0
+            if point_pointers != null and point_pointers.length > 0
                 @insert pp for pp in point_pointers
 
         #Always work with quadrents in this order.
@@ -54,18 +53,17 @@ Gamma.namespace "Gravity", (G, top) ->
             null
 
         _new_QuadTree: (corner) ->
-            new G.QuadTree corner, null, @RECUR_LIMIT-1
+            new (@getQT_T()) corner, null, @RECUR_LIMIT-1
 
-        QT_NODE_CAPACITY: 1
-        color: "#000000"
+        getQT_T: -> G.QuadTree
+        QT_NODE_CAPACITY: 3
 
-        #:: V2 -> bool
+        #:: V2* -> bool
         insert: (pp) ->
             if not @boundary.containsPoint pp.position
                 return false
 
             if @pointps.length < @QT_NODE_CAPACITY
-                @color = pp.color #FIXME
                 @pointps.push pp
                 return true
 
@@ -104,26 +102,35 @@ Gamma.namespace "Gravity", (G, top) ->
             q.map f, _acc for q in @getQuadrents()
             _acc
 
+
+    G.SquareTree = class extends G.QuadTree
+        color: "#000000"
+        getQT_T: -> G.SquareTree
+
         draw: (ctx) ->
-            len = @getQuadrents().length
-            delta = len/@QT_NODE_CAPACITY
-            opacity = easeInOutCirc len, 0.15, delta, @QT_NODE_CAPACITY
+            delta = @getQuadrents().length/@QT_NODE_CAPACITY
+            v = easeInOutCirc delta, 0.25, 1/@QT_NODE_CAPACITY, 1
             if @RECUR_LIMIT % 2 == 0
                 @getQuadrents().map (x) =>
-                    x.color = Gamma.RGBA.fromHex @color, opacity
+                    x.color = Gamma.RGBA.fromHex @color, v
 
-            ctx.strokeStyle = Gamma.RGBA.fromHex @color, opacity
-            ctx.lineWidth   = @RECUR_LIMIT/4
+            ctx.strokeStyle = Gamma.RGBA.fromHex @color, v
+            ctx.lineWidth   = v*8
+
             ctx.strokeRect(
                 @boundary.center[0]-@boundary.half,
                 @boundary.center[1]-@boundary.half,
                 @boundary.half*2,
                 @boundary.half*2)
 
+        insert: (square) ->
+            @color = square.color
+            super square
+
 
     easeInOutCirc = (t, b, c, d) ->
-            t /= d/2
-            if t < 1
-                return -c/2 * (Math.sqrt(1 - t*t) - 1) + b
-            t -= 2
-            return c/2 * (Math.sqrt(1 - t*t) + 1) + b
+        t /= d/2
+        if t < 1
+            return -c/2 * (Math.sqrt(1 - t*t) - 1) + b
+        t -= 2
+        return c/2 * (Math.sqrt(1 - t*t) + 1) + b
