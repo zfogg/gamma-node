@@ -101,7 +101,7 @@ Gamma.namespace "Gravity", (G, top) ->
 
             constructSquares gridSize, gridSize, size
 
-        resetQT = (recur_lim=10) ->
+        newSquareTree = (recur_lim=10) ->
             s = canvas.width/2
             new Gravity.SquareTree (new Gravity.AABB [s, s], s), squares, recur_lim
 
@@ -142,8 +142,9 @@ Gamma.namespace "Gravity", (G, top) ->
         Mousetrap.bind 'space', ->
             for s in squares
                 r = (p, k) ->
-                    [-1, 1].random() * C$.Math.randomBetween p*s.size, k*s.size
-                s.applyForce vectors.get (r 0.2, 0.6), (r 0.2, 0.6)
+                    [-1, 1].random() * C$.Math.randomBetween p*s.mass, k*s.mass
+                s.applyForce vectors.get (r 0.1, 0.4), (r 0.1, 0.4)
+            false
 
         Mousetrap.bind 'f10', ->
             Gamma.toggleNav()
@@ -161,15 +162,16 @@ Gamma.namespace "Gravity", (G, top) ->
 
         canvasBox = new Gravity.AABB [480, 240], 480
         do main = ->
-            C$.clearCanvas canvas, ctx
-
             #Update
             cursor.update()
-            mapPairs applyGravity, squares
+            #mapPairs applyGravity, squares
             square.update G.gameTime for square in squares
 
             #Render
-            qt$.draw G.ctx for qt$ in resetQT().map Fn.id
+            C$.clearCanvas canvas, ctx
+            G.ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
+            G.ctx.fillRect 0, 0, canvas.width, canvas.height
+            t.draw G.ctx for t in newSquareTree().map Fn.id
             cursor.draw G.ctx
             s.draw ctx for s in squares
 

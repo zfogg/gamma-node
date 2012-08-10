@@ -21,11 +21,3 @@ $ ->
   ($ ".navItem").mouseout ->
     replaceBGColor ($ "body")[0], bodyBGColor
     ($ "#header h1").css "color", headerH1Color
-
-  Gamma.toggleNav = ->
-    ($ "#header").slideToggle "slow"
-    ($ "#footer").slideToggle "slow"
-    if (($ "#container").css "padding-top") == "0px"
-      ($ "#container").css("padding-top",    "15px")
-    else
-      ($ "#container").css("padding-top",    "0px")

@@ -1,7 +1,8 @@
 Gamma.namespace "Gravity", (G, top) ->
-    Fn = G.C$.Fn
+    Fn    = G.C$.Fn
+    Math$ = G.C$.Math
 
-    G.AABB = exports.AABB = class
+    G.AABB = class
         constructor: (@center, @half) ->
             @_nw = G.vectors.get @center[0] - @half, @center[1] - @half
             @_ne = G.vectors.get @center[0] + @half, @center[1] - @half
@@ -31,7 +32,7 @@ Gamma.namespace "Gravity", (G, top) ->
                 new G.AABB [@_se[0] - q, @_se[1] - q], q
             ]
 
-    G.QuadTree = exports.class = class
+    G.QuadTree = class
         #:: AABB -> @
         constructor: (@boundary, point_pointers, @RECUR_LIMIT) ->
             @pointps = []
@@ -92,7 +93,7 @@ Gamma.namespace "Gravity", (G, top) ->
             if @_nw == null
                 return pointsInRange
 
-            for q in @getQuadrents()
+            for q in @quadrents
                 Array::push.apply pointsInRange, q.queryRange range
 
             return pointsInRange
@@ -104,28 +105,79 @@ Gamma.namespace "Gravity", (G, top) ->
 
 
     G.SquareTree = class extends G.QuadTree
+        #Ensure that your colors are six hex digits.
         color: "#000000"
         getQT_T: -> G.SquareTree
+        QT_NODE_CAPACITY: 4
+
+        mass: 0
+        theta: 8
+
+        constructor: (@boundary, point_pointers, @RECUR_LIMIT) ->
+            @barycenter = [
+                @boundary._nw[0] - @boundary.half,
+                @boundary._sw[1] - @boundary.half
+            ]
+
+            super @boundary, point_pointers, @RECUR_LIMIT
+
+        updateMass: (m) -> @mass += m
+
+        updateBarycenter: (p) ->
+            sumx = 0; sumy = 0
+            for pp in @pointps
+                sumx += pp.position[0]
+                sumy += pp.position[1]
+            @barycenter[0] = (sumx + p[0])/(1+@pointps.length)
+            @barycenter[1] = (sumy + p[1])/(1+@pointps.length)
+
+        ratio: (p) ->
+            (@boundary.half*2) / (G.distance @position, p.position)
 
         draw: (ctx) ->
-            delta = @getQuadrents().length/@QT_NODE_CAPACITY
-            v = easeInOutCirc delta, 0.25, 1/@QT_NODE_CAPACITY, 1
-            if @RECUR_LIMIT % 2 == 0
-                @getQuadrents().map (x) =>
-                    x.color = Gamma.RGBA.fromHex @color, v
+            if @pointps.length > 0
+                len = @pointps.length/@QT_NODE_CAPACITY
+                delta = 1/@QT_NODE_CAPACITY
+                v     = easeInOutCirc len, 0, delta, 1
+                if v > 0
+                    v *= @QT_NODE_CAPACITY
+                    c = Gamma.RGBA.fromHex @color, v
+                    if @RECUR_LIMIT % 2 == 0
+                        @getQuadrents().map (x) ->
+                            x.color = c
 
-            ctx.strokeStyle = Gamma.RGBA.fromHex @color, v
-            ctx.lineWidth   = v*8
+                    ctx.strokeStyle = c
+                    ctx.fillStyle   = c
 
+                    @_drawBoundary   ctx, v
+                    @_drawBarycenter ctx, v
+                    @_drawMass       ctx, v
+
+        _drawBoundary: (ctx, v) ->
+            ctx.lineWidth   = (1-v)*4
             ctx.strokeRect(
                 @boundary.center[0]-@boundary.half,
                 @boundary.center[1]-@boundary.half,
                 @boundary.half*2,
                 @boundary.half*2)
 
-        insert: (square) ->
-            @color = square.color
-            super square
+        _drawBarycenter: (ctx, v) ->
+            ctx.beginPath()
+            ctx.arc @barycenter[0], @barycenter[1], 4*v, 0, Math.PI*2, true
+            ctx.closePath()
+            ctx.stroke()
+
+        _drawMass: (ctx, v) ->
+            ctx.fillText((Math$.roundDigits @mass, 2),
+                @boundary.center[0],
+                @boundary.center[1])
+
+        insert: (s) ->
+            if @boundary.containsPoint s.position
+                @color = s.color
+                @updateBarycenter s.position
+                @updateMass s.mass
+            super s
 
 
     easeInOutCirc = (t, b, c, d) ->

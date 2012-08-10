@@ -1,6 +1,7 @@
 extends ../layout/index
 
 append js
+  != js("libs/Stats")
   != js("libs/yabble")
   :coffeescript
     require.run '/js/canvas/#{canvasScript}/index'

@@ -35,5 +35,3 @@ Gamma.namespace "Gravity", (exports$, top) ->
               @velocity[1] = -bounce @velocity[1]
             else if @position[1] < 0 + offset
               @velocity[1] = bounce @velocity[1]
-
-        log: -> console.log arguments

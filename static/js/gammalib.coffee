@@ -2,6 +2,14 @@ Gamma =
     replaceClass: (e, regex, c) ->
         e.className = e.className.replace regex, c
 
+    toggleNav: ->
+        ($ "#header").slideToggle "slow"
+        ($ "#footer").slideToggle "slow"
+        if (($ "#container").css "padding-top") == "0px"
+            ($ "#container").css("padding-top", "60px")
+        else
+            ($ "#container").css("padding-top", "0px")
+
     RGBA:
         toArray: (s) ->
             vals = s.match /\.?\d+\.?\d*/g
@@ -10,14 +18,10 @@ Gamma =
             vals
         toString: (xs) ->
             "rgba(#{xs.join ','})"
-        fromRGB: (rgb, opacity=1) ->
-            vals = s.match /\.?\d+\.?\d*/g
-            "rgba(#{vals[0]},#{vals[1]},#{vals[2]},#{opacity})"
-        fromHex: (hex, opacity=1) ->
-            rgb = (hex.replace '#', '').match /(.{2})/g
-            for i in [0...3]
-                rgb[i] = parseInt rgb[i], 16
-            return "rgba(#{rgb.join ', '}, #{opacity})";
+        fromRGB: (rgb, alpha) ->
+            "rgba(#{(rgb.match /\.?\d+\.?\d*/g).join ','},#{alpha})"
+        fromHex: (hex, alpha) ->
+            "rgba(#{(parseInt hex[i...i+2], 16 for i in [1...7] by 2).join ', '}, #{alpha})";
 
     namespace: (target, name, block) ->
         [target, name, block] = [(if typeof exports isnt 'undefined' then exports else window), arguments...] if arguments.length < 3
