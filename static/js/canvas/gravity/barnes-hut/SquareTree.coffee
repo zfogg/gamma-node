@@ -8,7 +8,7 @@ Gamma.namespace "Gravity", (G, top) ->
 
         mass: 0
         massx: 0, massy: 0
-        theta: C$.Math.PHI
+        theta: 1-C$.Math.PHI
 
 
         constructor: (@boundary, point_pointers, @RECUR_LIMIT) ->
