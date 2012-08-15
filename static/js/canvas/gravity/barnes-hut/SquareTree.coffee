@@ -8,6 +8,8 @@ Gamma.namespace "Gravity", (G, top) ->
 
         mass: 0
         massx: 0, massy: 0
+        theta: C$.Math.PHI
+
 
         constructor: (@boundary, point_pointers, @RECUR_LIMIT) ->
             @_barycenter = new Float64Array 2
@@ -40,7 +42,7 @@ Gamma.namespace "Gravity", (G, top) ->
             if @external
                 if @pointp == null
                     return
-                else if @pointp != s
+                else if s != @pointp
                     g = G.attractionOfGravity s, @pointp
                     acc[0] += g[0]; acc[1] += g[1]
                     G.vectors.put g
