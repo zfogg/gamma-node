@@ -1,10 +1,8 @@
-Gamma.namespace "Gravity", (exports$, top) ->
-    G = exports$
+#=require "../canvas-tools"
+#=require "PhysicalBody"
 
-    C$           = require "../canvas-tools"
-    PhysicalBody = (require "./PhysicalBody").class
-
-    exports.class = class extends PhysicalBody
+Gamma.namespace "Gravity", (G, top) ->
+    class G.PhysicalCursor extends G.PhysicalBody
         constructor: ->
             @position        = G.vectors.get()
             @trackedPosition = G.vectors.get()

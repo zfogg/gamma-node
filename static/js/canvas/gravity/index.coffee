@@ -1,9 +1,10 @@
-Gravity = (require "./gravity").Gravity
+#=require "gravity"
 
-$ ->
-  canvas        = ($ "#canvas")[0]
-  canvas.height = 960
-  canvas.width  = 960
+Gamma.namespace "Gravity", (G, top) ->
+    $ ->
+        canvas        = ($ "#canvas")[0]
+        canvas.height = ($ "#content").width()
+        canvas.width  = ($ "#content").width()
 
-  if canvas.getContext
-    Gravity canvas
+        if canvas.getContext
+            G.Gravity canvas

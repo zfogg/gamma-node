@@ -1,16 +1,15 @@
-Gamma.namespace "Gravity", (exports$, top) ->
-    G = exports$
+#=require "PhysicalBody"
 
-    PhysicalBody = (require "./PhysicalBody").class
-
-    exports.class = class extends PhysicalBody
+Gamma.namespace "Gravity", (G, top) ->
+    class G.PhysicalSquare extends G.PhysicalBody
         constructor: (@position, @mass, @size, @index, @color) ->
           super @position, @mass, 1.2*@size, 0.95
 
         update: ->
-          G.applyGravity @, G.cursor
           if not G.cursor.isClicked.right and not G.cursor.isClicked.left
             @bounceOffLimits G.canvas.width, G.canvas.height, @mass*2
+          else
+            G.applyGravity @, G.cursor
           @updatePosition()
           @decayVelocity G.CC_friction.values.current
 
@@ -28,10 +27,10 @@ Gamma.namespace "Gravity", (exports$, top) ->
             bounced = false
             if @position[0] > width - offset
               @velocity[0] = -bounce @velocity[0]
-            else if @position[0] < 0 + offset
+            else if @position[0] <= 0
               @velocity[0] = bounce @velocity[0]
 
             if @position[1] > height - offset
               @velocity[1] = -bounce @velocity[1]
-            else if @position[1] < 0 + offset
+            else if @position[1] <= 0
               @velocity[1] = bounce @velocity[1]
