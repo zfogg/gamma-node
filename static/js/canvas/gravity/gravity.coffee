@@ -1,4 +1,3 @@
-#=require "../../libs/mousetrap.min"
 #=require "../canvas-tools"
 #=require "../canvas-controls"
 #=require "PhysicalSquare"
@@ -138,9 +137,6 @@ Gamma.namespace "Gravity", (G, top) ->
                     [-1, 1].random() * C$.Math.randomBetween p*s.mass, k*s.mass
                 s.applyForce vectors.get (r 0.1, 0.4), (r 0.1, 0.4)
             false
-
-        Mousetrap.bind 'f10', ->
-            Gamma.toggleNav()
 
         # Init.
 

@@ -22,18 +22,29 @@ server.configure ->
   server.use express.cookieParser()
   server.use express.bodyParser()
   server.use express.session secret: "gamma"
-  server.use server.router
 
+  server.use server.router
   null
+
+sessionDefaultKeys = ["cookie","lastAccess","touch","resetLastAccess","resetMaxAge","save","reload","destroy","regenerate"]
+withSessionLocals = (req, vars={}) ->
+    for k,v of req.session
+        if k not in sessionDefaultKeys
+            vars[k] = v
+    vars
 
 # Routes
 server.get '/', (req, res) ->
   fs.readFile "views/md/index.markdown", "utf8", (e, content) ->
     throw e if e
-    res.render '',
-      locals:
+    res.render '', withSessionLocals req,
         title: ''
         content: markdown content
+
+server.post "/_set_session_vars", (req, res) ->
+    req.session[k] = v for k,v of req.body
+    req.session.save()
+    res.end()
 
 server.get /^\/canvas\/([\w-]+\/?)+$/, (req, res) ->
   canvasScript = stripSlashes(req.params[0])
@@ -42,17 +53,18 @@ server.get /^\/canvas\/([\w-]+\/?)+$/, (req, res) ->
 
   try
     fs.lstatSync "static/js/canvas/#{canvasScript}"
-    res.render "canvas/canvas",
+    res.render "canvas/canvas", withSessionLocals req,
       canvasScript: canvasScript
       title: canvasScript
   catch e
-    res.render "404"
+    res.render "404", withSessionLocals req
 
 server.get /^\/([\/\w-]+)$/, (req, res) ->
-  fs.readFile "views/md/#{req.params[0]}.markdown", "utf8", (e, content) ->
-    if e then res.render "404"
-    else res.render req.params[0],
-      title: req.params[0]
+  path = req.params[0].replace /(^\/?|\/?$)/g, ""
+  fs.readFile "views/md/#{path}.markdown", "utf8", (e, content) ->
+    if e then res.render "404", withSessionLocals req
+    else res.render path, withSessionLocals req,
+      title: path
       content: markdown content
 
 server.get "/500", (req, res) ->
@@ -64,16 +76,14 @@ server.get "/*", (req, res) ->
 # Error Handling
 server.error (err, req, res, next) ->
   if err instanceof NotFound
-    res.render "404",
-      locals:
+    res.render "404", withSessionLocals req,
         title: "404 - Not Found"
-      status: 404
+        status: 404
   else
-    res.render "500"
-      locals:
+    res.render "500", withSessionLocals req,
         title : "The Server Encountered an Error"
         error: err
-      status: 500
+        status: 500
 
 NotFound = (msg) ->
   this.name = 'NotFound'

@@ -2,13 +2,25 @@ Gamma =
     replaceClass: (e, regex, c) ->
         e.className = e.className.replace regex, c
 
-    toggleNav: ->
-        ($ "#header").slideToggle "slow"
-        ($ "#footer").slideToggle "slow"
+    toggleFullsceen: (speed="slow") ->
+        ($ "#header").slideToggle speed
+        ($ "#footer").slideToggle speed
         if (($ "#container").css "padding-top") == "0px"
             ($ "#container").css("padding-top", "60px")
+            Gamma.setSessionVars fullscreen: true
         else
             ($ "#container").css("padding-top", "0px")
+            Gamma.setSessionVars fullscreen: false
+
+    setSessionVars: (vars, successMsg=null, failMsg=null) ->
+        $.ajax
+            url: "/_set_session_vars"
+            type: "POST"
+            dataType: "json"
+            contentType: "application/json; charset=UTF-8"
+            data: JSON.stringify vars
+            success: -> console.log successMsg if successMsg
+            fail:    -> console.log failMsg    if failMsg
 
     RGBA:
         toArray: (s) ->

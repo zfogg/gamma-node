@@ -16,8 +16,8 @@ Gamma.namespace "Gravity", (G, top) ->
             super @boundary, point_pointers, @RECUR_LIMIT
 
         clear: ->
-            @mass           =  0
-            @massx          =  0; @massy          = 0
+            @mass  =  0
+            @massx =  0; @massy = 0
 
             #FIXME: needs a new way of being cleared.
             @_barycenter[0] = 0; @_barycenter[1] = 0
