@@ -1,0 +1,36 @@
+extends layout/index
+
+append css
+  :stylus
+    #demo-map
+      height 960px
+
+append js
+  script(src="http://www.openlayers.org/api/OpenLayers.js")
+
+block content
+  #content-wrapper
+    #content
+      #demo-map
+      :coffeescript
+        lon     = parseInt '#{locals.map_lon || -8565200}', 10
+        lat     = parseInt '#{locals.map_lat || 4720100}', 10
+        extent  = 9000
+        left_x  = lon - extent
+        left_y  = lat - extent
+        right_x = lon + extent
+        right_y = lat + extent
+
+        window.map = new OpenLayers.Map "demo-map"
+          maxExtent: new OpenLayers.Bounds left_x, left_y, right_x, right_y
+          restrictedExtent: new OpenLayers.Bounds left_x, left_y, right_x, right_y
+          maxResolution: 150000
+          units: "meters"
+          projection: "EPSG:4326"
+          numZoomLevels: 18
+
+        map.addLayer new OpenLayers.Layer.OSM
+        map.setCenter (OpenLayers.LonLat lon, lat), 16
+
+        ($ "#demo-map").click ->
+          #Gamma.set_s
