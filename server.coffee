@@ -93,6 +93,5 @@ NotFound = (msg) ->
 stripSlashes = (ss) ->
   ss.replace(/^\/+/g, '').replace(/\/+$/g, '')
 
-
 server.listen  port
 console.log "Listening on http://0.0.0.0:" + port

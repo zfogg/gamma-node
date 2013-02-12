@@ -6,9 +6,11 @@ Gamma =
         ($ "#header").slideToggle speed
         ($ "#footer").slideToggle speed
         if (($ "#container").css "padding-top") == "0px"
-            ($ "#container").css("padding-top", "60px")
+            ($ "#container").css("padding-top", ($ "body").css("padding-bottom"))
+            ($ "body").css("padding-bottom", "0px")
             Gamma.setSessionVars fullscreen: true
         else
+            ($ "body").css("padding-bottom", ($ "#container").css("padding-top"))
             ($ "#container").css("padding-top", "0px")
             Gamma.setSessionVars fullscreen: false
 
@@ -40,5 +42,9 @@ Gamma =
         top    = target
         target = target[item] or= {} for item in name.split '.'
         block target, top
+
+    getParameterByName: (name) ->
+        match = (RegExp "[?&]#{name}=([^&]*)").exec window.location.search
+        match && decodeURIComponent match[1].replace /\+/g, ' '
 
 window.Gamma = Gamma

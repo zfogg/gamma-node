@@ -18,6 +18,7 @@ Gamma.namespace "Gravity", (G, top) ->
         defaultCursorFriction = (C$.Math.randomBetween 1, 4)
         defaultCursorMass     = 1750
         defaultCursorForce    = 0.65
+        defaultParticlesN     = (parseInt (Gamma.getParameterByName "particles"), 10) or 16
 
         G.direction = direction = (p1, p2) ->
             vectors.get p1[0] - p2[0], p1[1] - p2[1]
@@ -123,7 +124,7 @@ Gamma.namespace "Gravity", (G, top) ->
         ($ CC_defaultButton).click ->
             x() for x in controls.resets
 
-        CC_particleCount = controls.NumberInput "Rows of Squares", 16
+        CC_particleCount = controls.NumberInput "Rows of Squares", defaultParticlesN
         ($ CC_particleCount).blur controls.controlLimit (lower: 1, upper: 30)
 
         CC_resetButton = controls.ButtonInput("Reset Squares")
@@ -139,15 +140,11 @@ Gamma.namespace "Gravity", (G, top) ->
             false
 
         # Init.
-
-        bodyFromQt = (qt) ->
-            ss = qt.queryRange
-
         hypotenuse = C$.Math.hypotenuseLookup 3, 0,
             ((Math.pow canvas.width, 2) + (Math.pow canvas.height, 2)) / Math.pow 10, 5
             Float64Array
         G.cursor  = cursor  = new G.PhysicalCursor
-        G.squares = squares = resetSquares [], 16
+        G.squares = squares = resetSquares [], defaultParticlesN
         G.qt      = qt      = newSquareTree squares, 5
 
         do main = ->

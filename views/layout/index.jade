@@ -28,10 +28,15 @@ html.no-js(lang='en')
     != js('gamma')
     block js
 
+    //-Helper functions
+    - locals.sessionOr = function(v, other) {
+    -   return typeof locals[v] !== "undefined" ? locals[v] : other;
+    - }
+
   body
 
-    #container.container_12
-      #header.unselectable
+    #container.container_12(style="padding-top:#{locals.fullscreen ? '30px' : '0px'}")
+      #header.unselectable(style="display:#{locals.fullscreen ? 'none' : 'block'};")
 
         a(href="/")#logo.grid_5
           h1
@@ -61,14 +66,10 @@ html.no-js(lang='en')
       #main(role='main')
         block content
 
-      #footer.unselectable
+      #footer.unselectable(style="display:#{locals.fullscreen ? 'none' : 'block'}")
         #signature.grid_12
           p I made this - 
             a(href='https://twitter.com/zfogg') @zfogg
-
-    - if (locals.fullscreen)
-      :coffeescript
-        Gamma.toggleFullsceen 0
 
     script
       var _gaq = [['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];

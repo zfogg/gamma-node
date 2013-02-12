@@ -2,8 +2,10 @@ extends layout/index
 
 append css
   :stylus
-    #demo-map
+    #osmap
       height 960px
+      *
+        color #191F2B
 
 append js
   script(src="http://www.openlayers.org/api/OpenLayers.js")
@@ -11,26 +13,40 @@ append js
 block content
   #content-wrapper
     #content
-      #demo-map
+      #osmap
       :coffeescript
-        lon     = parseInt '#{locals.map_lon || -8565200}', 10
-        lat     = parseInt '#{locals.map_lat || 4720100}', 10
-        extent  = 9000
-        left_x  = lon - extent
-        left_y  = lat - extent
-        right_x = lon + extent
-        right_y = lat + extent
+        Gamma.namespace "Map", (exports, top) ->
+          #The center of UMD's College Park campus.
+          campusCenter = new OpenLayers.LonLat -8565200, 4720100
 
-        window.map = new OpenLayers.Map "demo-map"
-          maxExtent: new OpenLayers.Bounds left_x, left_y, right_x, right_y
-          restrictedExtent: new OpenLayers.Bounds left_x, left_y, right_x, right_y
-          maxResolution: 150000
-          units: "meters"
-          projection: "EPSG:4326"
-          numZoomLevels: 18
+          #Users can pan the map #{distance} meters from campusCenter.
+          extent       = Math.pow 10, 4
 
-        map.addLayer new OpenLayers.Layer.OSM
-        map.setCenter (OpenLayers.LonLat lon, lat), 16
+          exports.map = map = new OpenLayers.Map "osmap"
+            restrictedExtent: new OpenLayers.Bounds(
+              (campusCenter.lon - extent), (campusCenter.lat - extent),
+              (campusCenter.lon + extent), (campusCenter.lat + extent))
+            center: new OpenLayers.LonLat(
+              (eval "!{sessionOr('map_lon', 'campusCenter.lon')}"),
+              (eval "!{sessionOr('map_lat', 'campusCenter.lat')}"))
+            minZoomLevel: 14
+            maxZoomLevel: 18
+            zoom: eval "!{sessionOr('map_zoom', '16')}"
+            layers: [ new OpenLayers.Layer.OSM ]
+            controls: [
+                new OpenLayers.Control.Navigation()
+                new OpenLayers.Control.ScaleLine()
+                new OpenLayers.Control.KeyboardDefaults()
+              ]
 
-        ($ "#demo-map").click ->
-          #Gamma.set_s
+          #FIXME: A hack to make the map respect @(min|max)ZoomLevel
+          map.moveTo$ = map.moveTo
+          map.moveTo = (lonlat, zoom, options) ->
+            if @minZoomLevel <= zoom <= @maxZoomLevel
+              @moveTo$ lonlat, zoom, options
+
+          map.events.register "moveend", map, (e) ->
+            Gamma.setSessionVars
+              map_lon:  map.getCenter().lon
+              map_lat:  map.getCenter().lat
+              map_zoom: map.getZoom()
