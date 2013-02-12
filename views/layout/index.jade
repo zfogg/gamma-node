@@ -11,9 +11,10 @@ html.no-js(lang='en')
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    block title
-    - if (typeof(locals.title) !== "undefined")
-      title=locals.title+" | ZF"
+    if locals.title
+      title="ZF | "+locals.title
+    else
+      title="ZF"
     meta(name="description", content="Zach Fogg's personal public-facing website.")
     meta(name="author", content="Zach Fogg")
     meta(name="viewport", content='width=device-width, initial-scale=1')

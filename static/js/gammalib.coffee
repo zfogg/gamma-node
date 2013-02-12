@@ -2,7 +2,7 @@ Gamma =
     replaceClass: (e, regex, c) ->
         e.className = e.className.replace regex, c
 
-    toggleFullsceen: (speed="slow") ->
+    toggleFullscreen: (speed="slow") ->
         ($ "#header").slideToggle speed
         ($ "#footer").slideToggle speed
         if (($ "#container").css "padding-top") == "0px"

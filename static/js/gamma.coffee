@@ -30,5 +30,5 @@ $ ->
         #document.location = "/ie_reject"
 
     #User Input - Keyboard, Mouse, Touch
-    Mousetrap.bind 'f10', ->
-        Gamma.toggleFullsceen()
+    Mousetrap.bind 'f9', ->
+        Gamma.toggleFullscreen()
