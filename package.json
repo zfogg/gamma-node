@@ -4,7 +4,7 @@
   "author": "Zach Fogg <zach@zachfogg.com>",
   "version": "0.0.1",
   "dependencies": {
-    "connect": "1.8.5",
+    "connect": "3.7.0",
     "express": "2.5.2",
     "jade": "0.20.0",
     "markdown": "0.3.1",
